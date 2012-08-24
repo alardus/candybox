@@ -1,0 +1,9 @@
+%if isnew:
+    <h1>First login</h1>
+%else:
+    <h1>Please input your password</h1>
+%end
+<form action="/login" method="POST">
+    <input name="password" type="password" />
+    <input type="submit" />
+</form>
