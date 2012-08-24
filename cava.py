@@ -3,13 +3,13 @@ from bottle import run, route, request, response, redirect, view, template
 
 CAVA_SECRET = 'cava-hava-cacava'
 ETC_AUTH_FILE = '/etc/cava-auth'
-ETC_AUTH_FILE = 'cava-auth'
 
 etc_chap_secrets = '/etc/ppp/chap-secrets'
 etc_l2tpd_conf   = '/etc/l2tpd/xl2tpd.conf'
 
-etc_chap_secrets = 'chap-secrets'
-etc_l2tpd_conf   = 'xl2tpd.conf'
+#ETC_AUTH_FILE = 'cava-auth'
+#etc_chap_secrets = 'chap-secrets'
+#etc_l2tpd_conf   = 'xl2tpd.conf'
 
 def getAuthCachie():
     try:
@@ -92,4 +92,4 @@ def index():
     return template('password', dict(error = None, login = login, pwd = pwd))
 
 
-run(host='localhost', port=8080, debug=True)
+run(host='localhost', host = '0.0.0.0', port=8080, debug=True)
