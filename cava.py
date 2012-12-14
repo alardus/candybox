@@ -5,11 +5,11 @@ CAVA_SECRET = 'cava-hava-cacava'
 ETC_AUTH_FILE = '/etc/cava-auth'
 
 etc_chap_secrets = '/etc/ppp/chap-secrets'
-etc_l2tpd_conf   = '/etc/l2tpd/xl2tpd.conf'
+etc_xl2tpd_conf   = '/etc/xl2tpd/xl2tpd.conf'
 
 #ETC_AUTH_FILE = 'cava-auth'
 #etc_chap_secrets = 'chap-secrets'
-#etc_l2tpd_conf   = 'xl2tpd.conf'
+#etc_xl2tpd_conf   = 'xl2tpd.conf'
 
 def getAuthCachie():
     try:
@@ -40,9 +40,20 @@ def put_login_pass(login, pwd):
     with open(etc_chap_secrets, 'w') as fl:
         fl.write(login + ' * ' + pwd + '\n')
     sp = ConfigParser.SafeConfigParser()
-    sp.read(etc_l2tpd_conf)
+    sp.read(etc_xl2tpd_conf)
+    sp.set('global', 'access control', 'yes')
+    sp.set('global', 'auth file', '/etc/ppp/chap-secrets')
+    sp.set('lac beeline', 'lns', 'tp.internet.beeline.ru')
+    sp.set('lac beeline', 'redial', 'yes')
+    sp.set('lac beeline', 'redial timeout', '1')
+    sp.set('lac beeline', 'require chap', 'yes')
+    sp.set('lac beeline', 'require pap', 'no')
+    sp.set('lac beeline', 'require authentication', 'no')
     sp.set('lac beeline', 'name', login)
-    with open(etc_l2tpd_conf, 'w') as fl:
+    sp.set('lac beeline', 'ppp debug', 'yes')
+    sp.set('lac beeline', 'pppoptfile', '/etc/ppp/options.xl2tpd')
+    sp.set('lac beeline', 'autodial', 'yes')
+    with open(etc_xl2tpd_conf, 'w') as fl:
         sp.write(fl)
     return
 
@@ -96,6 +107,5 @@ def index():
     login, pwd = get_login_pass()
 
     return template('password', dict(error = None, login = login, pwd = pwd))
-
 
 run(host = '0.0.0.0', port=8080, debug=True)
