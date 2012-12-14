@@ -92,4 +92,4 @@ def index():
     return template('password', dict(error = None, login = login, pwd = pwd))
 
 
-run(host='localhost', host = '0.0.0.0', port=8080, debug=True)
+run(host = '0.0.0.0', port=8080, debug=True)
