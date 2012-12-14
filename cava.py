@@ -68,6 +68,11 @@ def login_post():
     else:
         return redirect('/login')
 
+
+@route('/restart', method="GET")
+def restartxl():
+    return os.service('service xl2tpd restart')
+
 @route('/password', method = 'POST')
 def index():
     auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
