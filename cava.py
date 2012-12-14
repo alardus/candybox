@@ -71,7 +71,8 @@ def login_post():
 
 @route('/restart', method="GET")
 def restartxl():
-    return os.service('service xl2tpd restart')
+    os.system('service xl2tpd restart')
+    return redirect('/password')
 
 @route('/password', method = 'POST')
 def index():
