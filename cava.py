@@ -6,6 +6,7 @@ ETC_AUTH_FILE = '/etc/cava-auth'
 
 etc_chap_secrets = '/etc/ppp/chap-secrets'
 etc_xl2tpd_conf   = '/etc/xl2tpd/xl2tpd.conf'
+issues            = "/etc/issues"
 
 #ETC_AUTH_FILE = 'cava-auth'
 #etc_chap_secrets = 'chap-secrets'
@@ -105,7 +106,7 @@ def index():
     if not auth or auth != getAuthCachie(): return redirect('/login')
 
     login, pwd = get_login_pass()
-
-    return template('password', dict(error = None, login = login, pwd = pwd))
+    iss = open(issues).read()
+    return template('password', dict(error = None, login = login, pwd = pwd, issues = iss))
 
 run(host = '0.0.0.0', port=8080, debug=True)
