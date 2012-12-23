@@ -1,12 +1,12 @@
 import hashlib, ConfigParser, os
-from bottle import run, route, request, response, redirect, view, template
+from bottle import run, route, request, response, redirect, view, template, static_file
 
 CAVA_SECRET = 'cava-hava-cacava'
 ETC_AUTH_FILE = '/etc/cava-auth'
 
 etc_chap_secrets = '/etc/ppp/chap-secrets'
 etc_xl2tpd_conf   = '/etc/xl2tpd/xl2tpd.conf'
-issues            = "/etc/issues"
+issues            = "/etc/issue"
 
 #ETC_AUTH_FILE = 'cava-auth'
 #etc_chap_secrets = 'chap-secrets'
@@ -58,7 +58,9 @@ def put_login_pass(login, pwd):
         sp.write(fl)
     return
 
-
+@route('/static/:path#.+#', name='static')
+def static(path):
+    return static_file(path, root='static')
 
 @route('/login')
 def login():
