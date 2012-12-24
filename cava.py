@@ -1,16 +1,21 @@
 import hashlib, ConfigParser, os
 from bottle import run, route, request, response, redirect, view, template, static_file
+import os
 
 CAVA_SECRET = 'cava-hava-cacava'
-ETC_AUTH_FILE = '/etc/cava-auth'
 
-etc_chap_secrets = '/etc/ppp/chap-secrets'
-etc_xl2tpd_conf   = '/etc/xl2tpd/xl2tpd.conf'
-issues            = "/etc/issue"
+if os.environ.get('DEVEL', 0) != 0:
+    ETC_AUTH_FILE = 'cava-auth'
 
-#ETC_AUTH_FILE = 'cava-auth'
-#etc_chap_secrets = 'chap-secrets'
-#etc_xl2tpd_conf   = 'xl2tpd.conf'
+    etc_chap_secrets = 'chap-secrets'
+    etc_xl2tpd_conf   = 'xl2tpd.conf'
+    issues            = "issue"
+else:
+    ETC_AUTH_FILE = '/etc/cava-auth'
+
+    etc_chap_secrets = '/etc/ppp/chap-secrets'
+    etc_xl2tpd_conf   = '/etc/xl2tpd/xl2tpd.conf'
+    issues            = "/etc/issue"
 
 def getAuthCachie():
     try:
