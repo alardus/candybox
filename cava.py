@@ -61,6 +61,7 @@ def put_login_pass(login, pwd):
     sp.set('lac beeline', 'autodial', 'yes')
     with open(etc_xl2tpd_conf, 'w') as fl:
         sp.write(fl)
+    os.system('service xl2tpd restart')
     return
 
 @route('/static/:path#.+#', name='static')
