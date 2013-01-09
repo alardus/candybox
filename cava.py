@@ -10,12 +10,20 @@ if os.environ.get('DEVEL', 0) != 0:
     etc_chap_secrets = 'chap-secrets'
     etc_xl2tpd_conf   = 'xl2tpd.conf'
     issues            = "issue"
+    uptime            = "uptime"
+    ifaces            = "ifaces"
+    connect           = "connect"
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
 
     etc_chap_secrets = '/etc/ppp/chap-secrets'
     etc_xl2tpd_conf   = '/etc/xl2tpd/xl2tpd.conf'
-    issues            = "/etc/issue"
+    issues            = "/var/log/bearouter/issue"
+    uptime            = "/var/log/bearouter/uptime"
+    ifaces            = "/var/log/bearouter/ifaces"
+    connect           = "/var/log/bearouter/connect"
+    proxy             = '/etc/dnsmasq.conf'
+
 
 def getAuthCachie():
     try:
@@ -64,6 +72,25 @@ def put_login_pass(login, pwd):
     os.system('service xl2tpd restart')
     return
 
+def put_proxy(netflix, pandora):
+    fl = open(proxy, 'r')
+    lines = fl.readlines()
+    fl.close()
+
+    fl = open(proxy, 'w')
+    for line in lines:
+        if not "netflix.com" in line:
+            pass
+            if not "pandora.com" in line:
+                fl.write(line)
+    fl.close()
+
+    fl = open(proxy, 'a')
+    fl.write('server=/netflix.com/' + netflix + '\n')
+    fl.write('server=/pandora.com/' + pandora + '\n')
+    fl.close()
+    os.system('service dnsmasq restart')
+
 @route('/static/:path#.+#', name='static')
 def static(path):
     return static_file(path, root='static')
@@ -89,10 +116,23 @@ def login_post():
         return redirect('/login')
 
 
-@route('/restart', method="GET")
-def restartxl():
-    os.system('service xl2tpd restart')
+# Old implemetation with separate button
+# @route('/restart', method="GET")
+# def restartxl():
+#     os.system('service xl2tpd restart')
+#     return redirect('/password')
+
+
+@route('/proxy', method="POST")
+def index():
+    auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
+    if not auth or auth != getAuthCachie(): return redirect('/login')
+
+    netflix = request.forms.get('netflix')
+    pandora  = request.forms.get('pandora')
+    put_proxy(netflix, pandora)
     return redirect('/password')
+
 
 @route('/password', method = 'POST')
 def index():
@@ -114,7 +154,17 @@ def index():
     if not auth or auth != getAuthCachie(): return redirect('/login')
 
     login, pwd = get_login_pass()
+    return template('password', dict(error = None, login = login, pwd = pwd))
+
+@route('/info')
+def index():
+    auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
+    if not auth or auth != getAuthCachie(): return redirect('/login')
+
     iss = open(issues).read()
-    return template('password', dict(error = None, login = login, pwd = pwd, issues = iss))
+    upt = open(uptime).read()
+    ifs = open(ifaces).read()
+    cnn = open(connect).read()
+    return template('info', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn))
 
 run(host = '0.0.0.0', port=8080, debug=True)

@@ -64,8 +64,8 @@
           <a class="brand">bearouter:</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="">Control panel</a></li>
-              <li><a href="info">System info</a></li>
+              <li><a href="password">Control panel</a></li>
+              <li class="active"><a>System info</a></li>
               <li><a href="about">About</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -75,69 +75,15 @@
 
     <div class="container">
 
-      <section id="control">
-      %if error:
-      <h1><font color=red>Please login first.</font></h1>
-      %end
-      <h2>Internet setup</h2>
-        <p>"Beeline" use VPN for giving users access to the Internet. Please enter your username and password:</p>
-
-        <form action="/password" method="POST" class="form-signin"> 
-           <input name="login" type="text" value="{{login}}" class="input-block-level" placeholder="Username"></h4></nobr>
-           <input name="pwd" type="password" value="{{pwd}}" class="input-block-level" placeholder="Password"></h4></nobr>
-            <button class="btn" type="submit">Save and connect</button>
-        </form>
+      <section id="info">
+        <h2>System info</h2>
+        <pre>{{connect}}</pre>
+        <pre>{{ifaces}}</pre>
+        <pre>{{uptime}}</pre>
+        <pre>{{issues}}</pre>
       </br>
 
-      <h2>Netflix and Pandora support</h2>
-      <p>If you are living outside the US you can't use Netflix, Pandora and some other services in normal way.<br>To access them we need to use proxy services located in the US. Not all of they are free for use, so<br>you need to create an account first before you can start using them.</p>
-
-      <p>Currently we support:
-          <ul>
-            <li><a href="http://tunlr.net">Tunlr</a> - free, support Pandora, Hulu and more <font color="red">EXCEPT Netflix</font>.</li>
-            <li><a href="http://www.unblock-us.com">Unblock-US</a> - $4.99/mo, <font color="green">support Netflix</font> and all other services.</a> </li>
-          </ul>
-          <br>
-      </p>
-        <form action="/proxy" method="POST"> 
-            <p>Select which service use for access Netflix:</p>
-            <select name="netflix">
-              <option value="208.122.23.22">Unblock-US</option>
-              <option value="142.54.177.158">Tunlr</option>
-            </select>
-
-            <p>Select which service use for access Pandora:</p>
-            <select name="pandora">
-              <option value="208.122.23.22">Unblock-US</option>
-              <option value="142.54.177.158">Tunlr</option>
-            </select>
-            <br>
-            <button class="btn" type="submit">Apply settings</button>
-        </form>
       </section>
-      <br>
-
-      <h2>Port forwarding</h2>
-      <p>Port forwarding allows remote computers (for example, computers on the Internet) to connect to a specific<br>computer or service within a private local-area network (LAN).</p>
-
-        <form action="" method="POST"> 
-           <input name="host" type="text" value="" placeholder="host"></nobr>
-           <input name="port" type="text" value="" placeholder="port"><br>
-           <button class="btn" type="submit">Apply settings</button>
-        </form>
-      </section>
-      <br>
-
-      <h2>DynDNS support</h2>
-      <p>Dynamic DNS service used to connect remotely to your DVR, webcam, computer or many other devices.</p>
-
-        <form action="" method="POST"> 
-           <input name="username" type="text" value="" placeholder="DynDNS username"></nobr>
-           <input name="password" type="text" value="" placeholder="DynDNS password"><br>
-           <button class="btn" type="submit">Apply settings</button>
-        </form>
-      </section>
-      <br>
 
     </div> <!-- /container -->
 

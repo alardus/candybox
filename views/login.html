@@ -64,12 +64,12 @@
       <form action="/login" method="POST" class="form-signin">
         %if isnew:
         <h1 class="form-signin-heading">Welcome to your new router!</br></br></h1>
-        <h2 class="form-signin-heading">This is your first login, so you need to create a password:</h2>
+        <p>This is your first login, so you need to pick a password:</p>
         <input name="password" type="password" class="input-block-level">
         <button class="btn btn-large btn-primary" type="submit">Create password</button>
         %else:
-        <h1 class="form-signin-heading">Welcome back!</br></br></h1>
-        <h2 class="form-signin-heading">Please enter your password:</h2>
+        <h1 class="form-signin-heading">Welcome back to your router!</br></br></h1>
+        <p>Please enter your password:</p>
         <input name="password" type="password" class="input-block-level">
         <button class="btn btn-large btn-primary" type="submit">Log in</button>
         %end
