@@ -72,6 +72,46 @@ def put_login_pass(login, pwd):
     os.system('service xl2tpd restart')
     return
 
+def get_proxy_netflix():
+    netflix_tunlr='142.54.177.158'
+    netflix_block='208.122.23.22'
+    fl = open(proxy, 'r')
+    lines = fl.readlines()
+    for line in lines:
+        if not "netflix.com" in line:
+            continue
+        line = line.split('/')
+        if len(line) == 3:
+            [server, netflix, netflix_ip] = line
+            netflix_ip = netflix_ip.strip()
+            if netflix_ip==netflix_block:
+                netflix_block = "selected"
+            if netflix_ip==netflix_tunlr:
+                netflix_tunlr = "selected"
+            return netflix_block, netflix_tunlr
+    fl.close()
+    return None, None
+
+def get_proxy_pandora():
+    pandora_tunlr='142.54.177.158'
+    pandora_block='208.122.23.22'
+    fl = open(proxy, 'r')
+    lines = fl.readlines()
+    for line in lines:
+        if not "pandora.com" in line:
+            continue
+        line = line.split('/')
+        if len(line) == 3:
+            [server, pandora, pandora_ip] = line
+            pandora_ip = pandora_ip.strip()
+            if pandora_ip==pandora_block:
+                pandora_block = "selected"
+            if pandora_ip==pandora_tunlr:
+                pandora_tunlr = "selected"
+            return pandora_block, pandora_tunlr
+    fl.close()
+    return None, None
+
 def put_proxy(netflix, pandora):
     fl = open(proxy, 'r')
     lines = fl.readlines()
@@ -154,7 +194,9 @@ def index():
     if not auth or auth != getAuthCachie(): return redirect('/login')
 
     login, pwd = get_login_pass()
-    return template('password', dict(error = None, login = login, pwd = pwd))
+    netflix_block, netflix_tunlr = get_proxy_netflix()
+    pandora_block, pandora_tunlr = get_proxy_pandora()
+    return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr))
 
 @route('/info')
 def index():
