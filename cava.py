@@ -1,6 +1,5 @@
-import hashlib, ConfigParser, os
+import hashlib, ConfigParser, os, crypt
 from bottle import run, route, request, response, redirect, view, template, static_file
-import os
 
 CAVA_SECRET = 'cava-hava-cacava'
 
@@ -147,6 +146,11 @@ def login_post():
     pwd = request.forms.get('password', None)
     if auth == None:
         putAuthCachie(pwd)
+        
+        # Change user 'router' system password
+        salt_pwd = crypt.crypt(pwd,"8C")
+        os.system('usermod -p %s router' % salt_pwd)
+        
         return redirect('/login')
     pwd = hashlib.md5(pwd).hexdigest()
     if auth == pwd:
