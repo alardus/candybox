@@ -213,4 +213,4 @@ def index():
     cnn = open(connect).read()
     return template('info', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn))
 
-run(host = '0.0.0.0', port=8080, debug=True)
+run(host = '0.0.0.0', port=8080, debug=True, reloader=True)
