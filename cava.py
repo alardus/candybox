@@ -159,14 +159,6 @@ def login_post():
     else:
         return redirect('/login')
 
-
-# Old implemetation with separate button
-# @route('/restart', method="GET")
-# def restartxl():
-#     os.system('service xl2tpd restart')
-#     return redirect('/password')
-
-
 @route('/proxy', method="POST")
 def index():
     auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
@@ -176,7 +168,6 @@ def index():
     pandora  = request.forms.get('pandora')
     put_proxy(netflix, pandora)
     return redirect('/password')
-
 
 @route('/password', method = 'POST')
 def index():
@@ -188,8 +179,14 @@ def index():
     pwd   = request.forms.get('pwd',   None)
 
     put_login_pass(login, pwd)
-
-    return template('password', dict(error = error, login = login, pwd = pwd))
+    pass_success_saved='Username and password saved.'
+    netflix_block, netflix_tunlr = get_proxy_netflix()
+    pandora_block, pandora_tunlr = get_proxy_pandora()
+    os.system('/usr/bin/bearouter-logs.sh')
+    cnn = open(connect).read()
+    cnn = cnn.strip()
+    # return template('password', dict(error = error, login = login, pwd = pwd))
+    return template('password', dict(error = error,  netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, pass_success_saved = pass_success_saved, connect = cnn))
 
 @route('/password')
 @route('/')
@@ -197,10 +194,14 @@ def index():
     auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
     if not auth or auth != getAuthCachie(): return redirect('/login')
 
-    login, pwd = get_login_pass()
+    # login, pwd = get_login_pass()
+    cnn = open(connect).read()
+    cnn = cnn.strip()
+    pass_success_saved=''
     netflix_block, netflix_tunlr = get_proxy_netflix()
     pandora_block, pandora_tunlr = get_proxy_pandora()
-    return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr))
+    # return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr))
+    return template('password', dict(error = None, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, pass_success_saved = pass_success_saved, connect = cnn))
 
 @route('/info')
 def index():
@@ -213,4 +214,4 @@ def index():
     cnn = open(connect).read()
     return template('info', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn))
 
-run(host = '0.0.0.0', port=8080, debug=True, reloader=True)
+run(host = '0.0.0.0', port=8081, debug=True, reloader=True)
