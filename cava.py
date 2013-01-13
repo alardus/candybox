@@ -8,20 +8,26 @@ if os.environ.get('DEVEL', 0) != 0:
 
     etc_chap_secrets = 'chap-secrets'
     etc_xl2tpd_conf   = 'xl2tpd.conf'
-    issues            = "issue"
-    uptime            = "uptime"
-    ifaces            = "ifaces"
-    connect           = "connect"
+    issues            = 'issue'
+    uptime            = 'uptime'
+    ifaces            = 'ifaces'
+    connect           = 'connect'
+    dyndns            = 'ddclient.conf'
+    ddns              = 'ddns'
+    ddns_status       = 'ddns_status'
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
 
     etc_chap_secrets = '/etc/ppp/chap-secrets'
     etc_xl2tpd_conf   = '/etc/xl2tpd/xl2tpd.conf'
-    issues            = "/var/log/bearouter/issue"
-    uptime            = "/var/log/bearouter/uptime"
-    ifaces            = "/var/log/bearouter/ifaces"
-    connect           = "/var/log/bearouter/connect"
+    issues            = '/var/log/bearouter/issue'
+    uptime            = '/var/log/bearouter/uptime'
+    ifaces            = '/var/log/bearouter/ifaces'
+    connect           = '/var/log/bearouter/connect'
     proxy             = '/etc/dnsmasq.conf'
+    dyndns            = '/etc/ddclient.conf'
+    ddns              = '/var/log/bearouter/ddns'
+    ddns_status       = '/var/log/bearouter/ddns_status'
 
 
 def getAuthCachie():
@@ -46,6 +52,10 @@ def get_login_pass():
             line = line.split(' ')
             if len(line) == 3:
                 [username, dot, password] = line
+
+                # Change password for nothing for security reason
+                password = 'enter_your_password_again'
+
                 return username, password
     return None, None
 
@@ -70,6 +80,66 @@ def put_login_pass(login, pwd):
         sp.write(fl)
     os.system('service xl2tpd restart')
     return
+
+def get_dyn_login():
+    fl = open(dyndns, 'r')
+    lines = fl.readlines()
+    for line in lines:
+        if not "login" in line:
+            continue
+        line = line.split('=')
+        [l, dyn_login] = line
+        return dyn_login
+    fl.close()
+
+def get_dyn_password():
+    fl = open(dyndns, 'r')
+    lines = fl.readlines()
+    for line in lines:
+        if not "password" in line:
+            continue
+        line = line.split('=')
+        [p, dyn_password] = line
+
+        # Change password for nothing for security reason
+        dyn_password = 'enter_your_password_again'
+
+        return dyn_password
+    fl.close()
+
+def get_dyn_host():
+    fl = open(dyndns, 'r')
+    lines = fl.readlines()
+    for line in lines:
+        if not "host" in line:
+            continue
+        line = line.split('=')
+        [h, dyn_host] = line
+        return dyn_host
+    fl.close()
+
+def put_dyndns(login, password, host):
+    fl = open(dyndns, 'r')
+    lines = fl.readlines()
+    fl.close()
+
+    fl = open(dyndns, 'w')
+    for line in lines:
+        if not "login" in line:
+            pass
+            if not "password" in line:
+                pass
+                if not "host" in line:
+                    fl.write(line)
+    fl.close()
+
+    fl = open(dyndns, 'a')
+    fl.write('login=' + login + '\n')
+    fl.write('password=' + password + '\n')
+    fl.write('host=' + host + '\n')
+    fl.close()
+    os.system('service ddclient restart')
+    os.system('/usr/bin/bearouter-logs.sh')
 
 def get_proxy_netflix():
     netflix_tunlr='142.54.177.158'
@@ -165,8 +235,19 @@ def index():
     if not auth or auth != getAuthCachie(): return redirect('/login')
 
     netflix = request.forms.get('netflix')
-    pandora  = request.forms.get('pandora')
+    pandora = request.forms.get('pandora')
     put_proxy(netflix, pandora)
+    return redirect('/password')
+
+@route('/dyndns', method="POST")
+def index():
+    auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
+    if not auth or auth != getAuthCachie(): return redirect('/login')
+
+    login = request.forms.get('login')
+    password = request.forms.get('password')
+    host = request.forms.get('host')    
+    put_dyndns(login, password, host)
     return redirect('/password')
 
 @route('/password', method = 'POST')
@@ -177,16 +258,8 @@ def index():
     error = None
     login = request.forms.get('login', None)
     pwd   = request.forms.get('pwd',   None)
-
     put_login_pass(login, pwd)
-    pass_success_saved='Username and password saved.'
-    netflix_block, netflix_tunlr = get_proxy_netflix()
-    pandora_block, pandora_tunlr = get_proxy_pandora()
-    os.system('/usr/bin/bearouter-logs.sh')
-    cnn = open(connect).read()
-    cnn = cnn.strip()
-    # return template('password', dict(error = error, login = login, pwd = pwd))
-    return template('password', dict(error = error,  netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, pass_success_saved = pass_success_saved, connect = cnn))
+    return redirect('/password')
 
 @route('/password')
 @route('/')
@@ -194,14 +267,17 @@ def index():
     auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
     if not auth or auth != getAuthCachie(): return redirect('/login')
 
-    # login, pwd = get_login_pass()
+    login, pwd = get_login_pass()
     cnn = open(connect).read()
     cnn = cnn.strip()
-    pass_success_saved=''
+    dns = open(ddns_status).read()
+    dns = dns.strip()
     netflix_block, netflix_tunlr = get_proxy_netflix()
     pandora_block, pandora_tunlr = get_proxy_pandora()
-    # return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr))
-    return template('password', dict(error = None, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, pass_success_saved = pass_success_saved, connect = cnn))
+    dyn_login = get_dyn_login()
+    dyn_password = get_dyn_password()
+    dyn_host = get_dyn_host()
+    return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns))
 
 @route('/info')
 def index():
@@ -212,6 +288,7 @@ def index():
     upt = open(uptime).read()
     ifs = open(ifaces).read()
     cnn = open(connect).read()
-    return template('info', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn))
+    dns = open(ddns).read()
+    return template('info', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn, dns = dns))
 
-run(host = '0.0.0.0', port=8081, debug=True, reloader=True)
+run(host = '0.0.0.0', port=8080, debug=True, reloader=True)
