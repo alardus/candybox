@@ -15,6 +15,7 @@ if os.environ.get('DEVEL', 0) != 0:
     dyndns            = 'ddclient.conf'
     ddns              = 'ddns'
     ddns_status       = 'ddns_status'
+    proxy             = 'dnsmasq.conf'
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
 
