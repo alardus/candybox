@@ -81,42 +81,24 @@ def put_login_pass(login, pwd):
     os.system('service xl2tpd restart')
     return
 
-def get_dyn_login():
-    fl = open(dyndns, 'r')
-    lines = fl.readlines()
-    for line in lines:
-        if not "login" in line:
-            continue
-        line = line.split('=')
-        [l, dyn_login] = line
-        return dyn_login
-    fl.close()
+def get_dyn_info():
+    with open(dyndns, 'r') as fl:
+        lines = fl.readlines()
+        login = None
+        password = None
+        host = None
+        for line in lines:
+            if "=" in line:
+                key, value = line.split('=', 1)
+                key = key.strip()
+                if key == "login":
+                    login = value.strip()
+                elif key == "pasword":
+                    password = value.strip()
+                elif key == "host":
+                    host = value.strip()
+        return login, password, host
 
-def get_dyn_password():
-    fl = open(dyndns, 'r')
-    lines = fl.readlines()
-    for line in lines:
-        if not "password" in line:
-            continue
-        line = line.split('=')
-        [p, dyn_password] = line
-
-        # Change password for nothing for security reason
-        dyn_password = 'enter_your_password_again'
-
-        return dyn_password
-    fl.close()
-
-def get_dyn_host():
-    fl = open(dyndns, 'r')
-    lines = fl.readlines()
-    for line in lines:
-        if not "host" in line:
-            continue
-        line = line.split('=')
-        [h, dyn_host] = line
-        return dyn_host
-    fl.close()
 
 def put_dyndns(login, password, host):
     fl = open(dyndns, 'r')
@@ -216,11 +198,11 @@ def login_post():
     pwd = request.forms.get('password', None)
     if auth == None:
         putAuthCachie(pwd)
-        
+
         # Change user 'router' system password
         salt_pwd = crypt.crypt(pwd,"8C")
         os.system('usermod -p %s router' % salt_pwd)
-        
+
         return redirect('/login')
     pwd = hashlib.md5(pwd).hexdigest()
     if auth == pwd:
@@ -246,7 +228,7 @@ def index():
 
     login = request.forms.get('login')
     password = request.forms.get('password')
-    host = request.forms.get('host')    
+    host = request.forms.get('host')
     put_dyndns(login, password, host)
     return redirect('/password')
 
@@ -274,9 +256,7 @@ def index():
     dns = dns.strip()
     netflix_block, netflix_tunlr = get_proxy_netflix()
     pandora_block, pandora_tunlr = get_proxy_pandora()
-    dyn_login = get_dyn_login()
-    dyn_password = get_dyn_password()
-    dyn_host = get_dyn_host()
+    dyn_login, dyn_password, dyn_host = get_dyn_info()
     return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns))
 
 @route('/info')
