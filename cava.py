@@ -171,9 +171,8 @@ def put_proxy(netflix, pandora):
 
     fl = open(proxy, 'w')
     for line in lines:
-        if not "netflix.com" in line:
-            pass
-            if not "pandora.com" in line:
+        if "netflix.com" not in line:
+            if "pandora.com" not in line:
                 fl.write(line)
     fl.close()
 
