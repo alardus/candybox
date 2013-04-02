@@ -1,7 +1,7 @@
 RPi router
 ==========
 
-Turn your RPi into router for Beeline (Corbina) ISP
+Turn your RPi into router for Beeline (ex. Corbina) ISP
 
 **What do you need to run it**
   * Raspberry Pi Model B
@@ -10,6 +10,7 @@ Turn your RPi into router for Beeline (Corbina) ISP
   * Latest bearouter ISO builded for RPi
 
 **How to use it**
+
 If you just needed to use your RPi as a router:
   * Go to http://bearouter.org/ and download latest release of bearouter ISO for RPi;
   * To use an image file, you will need to unzip it and write it to a suitable SD card using the UNIX tool dd. Windows users should use Win32DiskImager. Do not try to drag and drop or otherwise copy over the image without using dd or Win32DiskImager – it won’t work. If you’re still not clear on what to do, the community on the Raspberry Pi Wiki has written a guide for beginners on how to set up your SD card;
@@ -20,4 +21,4 @@ If you just needed to use your RPi as a router:
   * Enjoy.
 
 **If you interested in latest beta**
-  * Latest beta versions always available at http://bearouter.org/beta. Read section "How to use it" if you didn't know how to run it.
+  * Latest beta versions always available at http://bearouter.org/beta. 
