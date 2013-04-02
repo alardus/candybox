@@ -1,0 +1,17 @@
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface (WAN)
+auto eth0
+iface eth0 inet dhcp
+
+# The secondary network interface (LAN)
+auto eth1
+iface eth1 inet static
+	address 192.168.0.1
+	netword 192.168.0.0
+	netmask 255.255.255.0
+	broadcast 192.168.0.255
+
+pre-up iptables-restore < /etc/ppp/ip-up.d/iptables.rules

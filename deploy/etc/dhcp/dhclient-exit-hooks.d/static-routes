@@ -1,0 +1,21 @@
+###
+# bearouter project / 2012-2013
+# bearouter.org
+
+# dnsmasq config for DHCP and DNS servers parameters.
+
+# Maintainer: Alexander Bykov <alardus@alardus.org>
+###
+
+RUN="yes"
+   if [ "$RUN" = "yes" ]; then
+        if [ "$new_static_routes" != "" ]; then
+                if [ "$reason" = "BOUND" ] || [ "$reason" = "REBOOT" ]; then
+                        my_static_routes=($new_static_routes)
+                        for(( i=0; i < ${#my_static_routes[@]}; i=i+2 )); do
+                                /sbin/route add -host "${my_static_routes[$i]}" gw "${my_static_routes[$i+1]}"
+                        done
+                fi
+        fi
+   fi
+

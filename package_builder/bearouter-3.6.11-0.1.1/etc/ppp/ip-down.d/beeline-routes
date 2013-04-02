@@ -1,0 +1,17 @@
+#!/bin/bash
+
+###
+# bearouter project / 2012-2013
+# bearouter.org
+
+# Configure routing table for Corbina (Beeline) ISP
+
+# Maintainer: Alexander Bykov <alardus@alardus.org>
+###
+
+
+#Looking for default GW
+GW=`ip route show default | head -n1 | awk '{print $3}'`
+
+route del default 
+route add default gw $GW 

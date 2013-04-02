@@ -1,0 +1,10 @@
+remotename l2tp
+connect /bin/true
+nodeflate
+nobsdcomp
+persist
+maxfail 0
+nopcomp
+noaccomp
+noauth
+defaultroute

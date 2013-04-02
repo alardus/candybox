@@ -1,0 +1,148 @@
+#!/bin/bash
+
+###
+# bearouter project / 2012-2013
+# bearouter.org
+
+# Version for Raspberry Pi. Turn it into router. 
+
+# Maintainer: Alexander Bykov <alardus@alardus.org>
+###
+
+clear
+
+
+# Error handling 
+function test_error {
+	if [ $? != 0 ]; then 
+		echo "An error has occurred. Aborted."
+    	exit 1
+	fi
+}
+
+function test_package {
+	search=`dpkg --get-selections | grep $1 | head -n1 | awk '{print $2}'`
+	if [ "$search" != "install" ]; then
+		echo "$1 package not found. Aborted."
+    	exit 1
+	fi
+}
+
+
+# Step 0. Checking for internet connectivity
+echo "Checking for internet connection..."
+echo `ping -c1 ya.ru > /dev/null`
+	test_error
+
+
+# Step 1. Adding repository
+echo "Checking list of repositories..."
+cat repo.list > /dev/null
+	test_error
+
+cat repo.list | while read i; do
+	find_repo=`cat /etc/apt/sources.list | grep "$i"`
+	if [ "$find_repo" == "" ]; then
+		echo "Adding $i..."
+		echo $i >> /etc/apt/sources.list
+		test_error
+	fi
+done
+
+
+# Step 2. Installing packages and configs
+
+### Fix for DDNS client. We need to put ddclient config file BEFORE package will be installed
+cp etc/ddclient.conf /etc/ddclient.conf
+	test_error
+#cp etc/default/ddclient	/etc/default/ddclient
+#	test_error
+###
+
+echo "Updating apt cache and installing packages..."
+sleep 5
+apt-get update 
+LC_ALL=C apt-get install dnsmasq xl2tpd-kernel bearouter fail2ban ddclient host uuid-runtime
+	test_package "dnsmasq"
+	test_package "xl2tpd-kernel"
+	test_package "bearouter"
+	test_package "fail2ban"
+	test_package "ddclient"
+	test_package "host"
+	test_package "uuid-runtime"
+
+echo "Installing interfaces..."
+cp etc/network/interfaces /etc/network/interfaces
+	test_error
+
+echo "Installing dhclient..."
+cp etc/dhcp/dhclient.conf /etc/dhcp/dhclient.conf
+	test_error
+
+echo "Installing dhclient hooks..."
+cp etc/dhcp/dhclient-exit-hooks.d/static-routes /etc/dhcp/dhclient-exit-hooks.d/static-routes
+	test_error
+
+echo "Configuring ip_forwarding..."
+echo "1" > /proc/sys/net/ipv4/ip_forward
+	test_error
+
+echo "Configuring sysctl..."
+cp etc/sysctl.conf /etc/sysctl.conf
+	test_error
+
+echo "Configuring dnsmasq..."
+cp etc/dnsmasq.conf /etc/dnsmasq.conf
+	test_error
+
+echo "Configuring xl2tpd..."
+cp etc/xl2tpd/xl2tpd.conf /etc/xl2tpd/xl2tpd.conf
+	test_error
+cp etc/ppp/chap-secrets /etc/ppp/chap-secrets
+	test_error
+cp etc/ppp/options.xl2tpd /etc/ppp/options.xl2tpd
+	test_error
+
+echo "Configuring fail2ban..."
+cp etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.conf
+	test_error
+cp etc/fail2ban/jail.conf /etc/fail2ban/jail.conf
+	test_error
+cp etc/fail2ban/jail.local /etc/fail2ban/jail.local
+	test_error
+
+echo "Tune RPi config..."
+python ./tune_pi.py
+	test_error
+
+echo "Enable RPi first run..."
+cp etc/profile.d/raspi-config.sh /etc/profile.d/raspi-config.sh
+	test_error
+
+# Updating crontab for root
+echo "0 23 * * * /usr/bin/stat.sh" > /tmp/cronjob
+	test_error
+echo "*/1 * * * * /usr/bin/bearouter-logs.sh" >> /tmp/cronjob
+	test_error
+echo "*/5 * * * * /usr/bin/monitor.sh" >> /tmp/cronjob
+	test_error
+echo "*/5 * * * * /usr/sbin/ddclient" >> /tmp/cronjob
+	test_error
+
+crontab /tmp/cronjob
+	test_error
+rm /tmp/cronjob
+	test_error
+###
+
+# Fix for cava's system section. Preparing for 'bearouter-logs' script will not working
+mkdir /var/log/bearouter
+echo "" > /var/log/bearouter/connect
+echo "" > /var/log/bearouter/uptime
+echo "" > /var/log/bearouter/ifaces
+echo "" > /var/log/bearouter/issue
+echo "" > /var/log/bearouter/ddns
+echo "" > /var/log/bearouter/ddns_status
+###
+
+echo "Completed."

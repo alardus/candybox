@@ -1,0 +1,14 @@
+Upstream-Source: http://www.xelerance.com/software/xl2tpd/
+
+Upstream Author: Xelerance Corporation
+
+Files: *
+Copyright: (c) 2006-2013 Xelerance Corporation
+License: GPL-2+
+ Please see the CREDITS file for a complete copyright history of all parts of
+ the project.
+
+ On Debian systems, the complete text of the GNU General
+ Public License can be found in `/usr/share/common-licenses/GPL-2'.
+
+

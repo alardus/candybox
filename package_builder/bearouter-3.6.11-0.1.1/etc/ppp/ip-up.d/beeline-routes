@@ -1,0 +1,32 @@
+#!/bin/bash
+
+###
+# bearouter project / 2012-2013
+# bearouter.org
+
+# Configure routing table for Corbina (Beeline) ISP
+
+# Maintainer: Alexander Bykov <alardus@alardus.org>
+###
+
+
+#Looking for default gateway and DNS nameservers
+GW=`ip route show default | head -n1 | awk '{print $3}'`
+NS=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'`
+
+# Connect vpn-* throw gateway
+ROUTE=`route -n | awk '{print $1}'` 
+for i in $ROUTE; do
+	HOST=`host $i | awk '{print $5}'`
+	if [[ "$HOST" == *vpn* ]]; then
+	   route add -host $i gw $GW
+	fi 
+	done
+
+# Connect nameservers throw gateway
+for i in $NS; do
+	route add -host $i gw $GW
+done
+
+route del default 
+route add default dev ppp0
