@@ -121,7 +121,7 @@ def put_dyndns(login, password, host):
     fl.write('password=' + password + '\n')
     fl.write('host=' + host + '\n')
     fl.close()
-    os.system('service ddclient restart')
+    os.system('/usr/sbin/ddclient')
     os.system('/usr/bin/bearouter-logs.sh')
 
 def get_proxy_netflix():
@@ -199,9 +199,9 @@ def login_post():
     if auth == None:
         putAuthCachie(pwd)
 
-        # Change user 'router' system password
+        # Change user 'pi' system password
         salt_pwd = crypt.crypt(pwd,"8C")
-        os.system('usermod -p %s router' % salt_pwd)
+        os.system('usermod -p %s pi' % salt_pwd)
 
         return redirect('/login')
     pwd = hashlib.md5(pwd).hexdigest()
@@ -271,4 +271,4 @@ def index():
     dns = open(ddns).read()
     return template('info', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn, dns = dns))
 
-run(host = '0.0.0.0', port=8080, debug=True, reloader=True)
+run(host = '192.168.0.1', port=8080)

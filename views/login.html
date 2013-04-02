@@ -63,11 +63,11 @@
 
       <form action="/login" method="POST" class="form-signin">
         %if isnew:
-        <h1 class="form-signin-heading">Welcome to your new router.</br></h1>
+        <h1 class="form-signin-heading">Welcome to your new router</br></h1>
         <p>This is your first login. For security reasons you need to change:</p>
         <p>
           <ul>
-            <li>user "router" default password (used for accessing system by ssh);</li>
+            <li>user "pi" default password (used for accessing system by ssh);</li>
             <li>web configurator password (used for setup router from browser).</li>
           </ul>
         </p>
@@ -75,7 +75,7 @@
         <input name="password" type="password" class="input-block-level">
         <button class="btn btn-primary" type="submit">Set new password</button>
         %else:
-        <h1 class="form-signin-heading">Welcome back to your router.</br></br></h1>
+        <h1 class="form-signin-heading">Welcome back to your router</br></br></h1>
         <p>Please enter your password for web configurator:</p>
         <input name="password" type="password" class="input-block-level">
         <button class="btn btn-primary" type="submit">Log in</button>
