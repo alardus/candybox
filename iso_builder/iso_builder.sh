@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Check is all needed package are installed
+function test_package {
+	search=`/usr/bin/dpkg --get-selections | /bin/grep $1 | /usr/bin/head -n1 | /usr/bin/awk '{print $2}'`
+	if [ "$search" != "install" ]; then
+		echo "$1 package not found. Aborted."
+    	exit 1
+	fi
+}
+
+test_package "kpartx"
+
 echo "Copying original iso..."
 cp ./2013-02-09-wheezy-raspbian.img ./pi.img
 
