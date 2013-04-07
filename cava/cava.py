@@ -6,6 +6,7 @@ CAVA_SECRET = 'cava-hava-cacava'
 if os.environ.get('DEVEL', 0) != 0:
     ETC_AUTH_FILE = 'cava-auth'
 
+    listen_host = '0.0.0.0'
     bottle_reloader=True
 
     etc_chap_secrets = 'chap-secrets'
@@ -21,6 +22,7 @@ if os.environ.get('DEVEL', 0) != 0:
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
 
+    listen_host = '192.168.0.1'
     bottle_reloader=False
 
     etc_chap_secrets = '/etc/ppp/chap-secrets'
@@ -312,4 +314,4 @@ def index():
     dns = open(ddns).read()
     return template('info', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn, dns = dns))
 
-run(host = '0.0.0.0', port=8080, reloader=bottle_reloader)
+run(host = listen_host, port=8080, reloader=bottle_reloader)
