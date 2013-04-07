@@ -6,6 +6,8 @@ CAVA_SECRET = 'cava-hava-cacava'
 if os.environ.get('DEVEL', 0) != 0:
     ETC_AUTH_FILE = 'cava-auth'
 
+    bottle_reloader=True
+
     etc_chap_secrets = 'chap-secrets'
     etc_xl2tpd_conf   = 'xl2tpd.conf'
     issues            = 'issue'
@@ -18,6 +20,8 @@ if os.environ.get('DEVEL', 0) != 0:
     proxy             = 'dnsmasq.conf'
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
+
+    bottle_reloader=False
 
     etc_chap_secrets = '/etc/ppp/chap-secrets'
     etc_xl2tpd_conf   = '/etc/xl2tpd/xl2tpd.conf'
@@ -271,4 +275,4 @@ def index():
     dns = open(ddns).read()
     return template('info', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn, dns = dns))
 
-run(host = '192.168.0.1', port=8080)
+run(host = '0.0.0.0', port=8080, reloader=bottle_reloader)
