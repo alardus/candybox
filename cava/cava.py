@@ -191,6 +191,14 @@ def put_proxy(netflix, pandora):
     fl.close()
     os.system('service dnsmasq restart')
 
+def get_ports_info():
+    return {
+        '192.168.1.1': '8081',
+        '192.168.1.10': '12321',
+        '192.168.1.11': '12321',
+        '192.168.10.79/32': '27010'
+    }
+
 @route('/static/:path#.+#', name='static')
 def static(path):
     return static_file(path, root='static')
@@ -239,6 +247,34 @@ def index():
     put_dyndns(login, password, host)
     return redirect('/password')
 
+@route('/port', method="POST")
+def index():
+    if not has_auth():
+        return '{ "status": "error", "message": "no auth" }'
+    
+    action = request.forms.get('action')
+    host = (request.forms.get('host') or "").strip()
+    port = (request.forms.get('port') or "").strip()
+    
+    # TODO: host validation?
+    if host == '':
+        return '{ "status": "error", "message": "wrong host" }'
+    
+    port = int(port) if port.isdigit() else 0
+    
+    if port < 1 or port > 65535:
+        return '{ "status": "error", "message": "wrong port" }'
+    
+    if action == 'add':
+        # TODO: add record
+        return '{ "status": "ok", "host": "%s", "port": "%d" }' % (host, port)
+    
+    if action == 'remove':
+        # TODO: remove record
+        return '{ "status": "ok" }'
+    
+    return '{ "status": "error", "message": "wrong action" }'
+    
 @route('/password', method = 'POST')
 def index():
     if not has_auth(): return redirect('/login')
@@ -262,7 +298,8 @@ def index():
     netflix_block, netflix_tunlr = get_proxy_netflix()
     pandora_block, pandora_tunlr = get_proxy_pandora()
     dyn_login, dyn_password, dyn_host = get_dyn_info()
-    return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns))
+    ports = get_ports_info()
+    return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns, ports = ports))
 
 @route('/info')
 def index():
