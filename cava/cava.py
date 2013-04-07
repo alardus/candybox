@@ -46,6 +46,11 @@ def putAuthCachie(auth):
     with open(ETC_AUTH_FILE, 'w') as fl:
         fl.write(hashlib.md5(auth).hexdigest())
 
+def has_auth():
+    auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
+    if not auth or auth != getAuthCachie(): return False
+    return True
+
 def get_login_pass():
     if not os.path.isfile(etc_chap_secrets):
         return None, None
@@ -217,8 +222,7 @@ def login_post():
 
 @route('/proxy', method="POST")
 def index():
-    auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
-    if not auth or auth != getAuthCachie(): return redirect('/login')
+    if not has_auth(): return redirect('/login')
 
     netflix = request.forms.get('netflix')
     pandora = request.forms.get('pandora')
@@ -227,8 +231,7 @@ def index():
 
 @route('/dyndns', method="POST")
 def index():
-    auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
-    if not auth or auth != getAuthCachie(): return redirect('/login')
+    if not has_auth(): return redirect('/login')
 
     login = request.forms.get('login')
     password = request.forms.get('password')
@@ -238,8 +241,7 @@ def index():
 
 @route('/password', method = 'POST')
 def index():
-    auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
-    if not auth or auth != getAuthCachie(): return redirect('/login')
+    if not has_auth(): return redirect('/login')
 
     error = None
     login = request.forms.get('login', None)
@@ -250,8 +252,7 @@ def index():
 @route('/password')
 @route('/')
 def index():
-    auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
-    if not auth or auth != getAuthCachie(): return redirect('/login')
+    if not has_auth(): return redirect('/login')
 
     login, pwd = get_login_pass()
     cnn = open(connect).read()
@@ -265,8 +266,7 @@ def index():
 
 @route('/info')
 def index():
-    auth = request.get_cookie('auth', None, secret = CAVA_SECRET)
-    if not auth or auth != getAuthCachie(): return redirect('/login')
+    if not has_auth(): return redirect('/login')
 
     iss = open(issues).read()
     upt = open(uptime).read()
