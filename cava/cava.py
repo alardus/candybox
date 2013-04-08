@@ -20,6 +20,7 @@ if os.environ.get('DEVEL', 0) != 0:
     ddns_status       = 'ddns_status'
     proxy             = 'dnsmasq.conf'
     ports_cfg         = 'ports'
+    iptables_cfg      = 'iptables.rules'
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
 
@@ -37,6 +38,7 @@ else:
     ddns              = '/var/log/bearouter/ddns'
     ddns_status       = '/var/log/bearouter/ddns_status'
     ports_cfg         = 'ports'
+    iptables_cfg      = '/etc/ppp/ip-up.d/iptables.rules'
 
 
 def getAuthCachie():
@@ -273,14 +275,43 @@ def index():
         return '{ "status": "error", "message": "wrong port" }'
     
     if action == 'add':
-        # TODO: add record
+        os.system('iptables -t nat -A PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
+        os.system('iptables-save > %s' % (iptables_cfg))
         with open(ports_cfg, 'a') as fl:
             fl.write('%s\t%d\n' %(host, port))
         
         return '{ "status": "ok", "host": "%s", "port": "%d" }' % (host, port)
     
     if action == 'remove':
-        # TODO: remove record
+        ### Find and delete selected iptables rule ###
+        os.system('iptables-save > %s' % (iptables_cfg))
+        with open(iptables_cfg, 'r') as fl:
+            lines = fl.readlines()
+
+        with open(iptables_cfg, 'w') as fl:
+            for line in lines:
+                if '-A PREROUTING' in line:
+                    fl.write(line)
+
+        with open(iptables_cfg, 'r') as fl:
+            for num, line in enumerate(fl, 1):
+                if host in line:
+                    if '%d' % (port) in line: 
+                        os.system('iptables -t nat -D PREROUTING %d' % (num))
+                        os.system('iptables-save > %s' % (iptables_cfg))  
+        ### End of section ###         
+
+        with open(ports_cfg, 'r') as fl:
+            lines = fl.readlines()
+
+        with open(ports_cfg, 'w') as fl:
+            for line in lines:
+                if host in line:
+                    if '%d' % (port) in line: 
+                        fl.write('')
+                else:
+                    fl.write(line)
+
         return '{ "status": "ok" }'
     
     return '{ "status": "error", "message": "wrong action" }'
