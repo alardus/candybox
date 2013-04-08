@@ -199,8 +199,8 @@ def get_ports_info():
     ports = {}
     with open(ports_cfg, 'r') as fl:
         for line in fl:
-            if ":" in line:
-                key, value = line.split(':', 1)
+            if '\t' in line:
+                key, value = line.split('\t', 1)
                 key = key.strip()
                 value = value.strip()
                 ports[key] = value
@@ -275,10 +275,8 @@ def index():
     if action == 'add':
         # TODO: add record
         with open(ports_cfg, 'a') as fl:
-            port = str(port)
-            fl.write(host + ':' + port + '\n')
-            
-        port = int(port)
+            fl.write('%s\t%d\n' %(host, port))
+        
         return '{ "status": "ok", "host": "%s", "port": "%d" }' % (host, port)
     
     if action == 'remove':
