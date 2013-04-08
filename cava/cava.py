@@ -19,7 +19,6 @@ if os.environ.get('DEVEL', 0) != 0:
     ddns              = 'ddns'
     ddns_status       = 'ddns_status'
     proxy             = 'dnsmasq.conf'
-    ports_cfg         = 'ports'
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
 
@@ -36,7 +35,6 @@ else:
     dyndns            = '/etc/ddclient.conf'
     ddns              = '/var/log/bearouter/ddns'
     ddns_status       = '/var/log/bearouter/ddns_status'
-    ports_cfg         = 'ports'
 
 
 def getAuthCachie():
@@ -196,15 +194,12 @@ def put_proxy(netflix, pandora):
     os.system('service dnsmasq restart')
 
 def get_ports_info():
-    ports = {}
-    with open(ports_cfg, 'r') as fl:
-        for line in fl:
-            if ":" in line:
-                key, value = line.split(':', 1)
-                key = key.strip()
-                value = value.strip()
-                ports[key] = value
-    return ports
+    return {
+        '192.168.1.1': '8081',
+        '192.168.1.10': '12321',
+        '192.168.1.11': '12321',
+        '192.168.10.79/32': '27010'
+    }
 
 @route('/static/:path#.+#', name='static')
 def static(path):
@@ -274,11 +269,6 @@ def index():
     
     if action == 'add':
         # TODO: add record
-        with open(ports_cfg, 'a') as fl:
-            port = str(port)
-            fl.write(host + ':' + port + '\n')
-            
-        port = int(port)
         return '{ "status": "ok", "host": "%s", "port": "%d" }' % (host, port)
     
     if action == 'remove':
