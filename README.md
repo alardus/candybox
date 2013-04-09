@@ -31,7 +31,7 @@ RPiR is fully configured and ready to run from the box, settings may be changed 
 - Setup internet connection, turn it on or off
 - Use Netflix and Pandora at any devices at your house
 - Use DDNS for accessing your home computer with dynamic IP
-- (planned) Manage port forvarding for any services in your home network (eg. torrents or web/ftp server) without manually entering iptables rules
+- Manage port forwarding for any services in your home network (eg. torrents or web/ftp server) without manually entering iptables rules
 - Observe the state of the system and it main services 
 
 **What in the box**
