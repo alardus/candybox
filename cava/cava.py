@@ -19,7 +19,6 @@ if os.environ.get('DEVEL', 0) != 0:
     ddns              = 'ddns'
     ddns_status       = 'ddns_status'
     proxy             = 'dnsmasq.conf'
-    ports_cfg         = 'ports'
     iptables_cfg      = 'iptables.rules'
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
@@ -37,7 +36,6 @@ else:
     dyndns            = '/etc/ddclient.conf'
     ddns              = '/var/log/bearouter/ddns'
     ddns_status       = '/var/log/bearouter/ddns_status'
-    ports_cfg         = 'ports'
     iptables_cfg      = '/etc/ppp/ip-up.d/iptables.rules'
 
 
@@ -198,15 +196,21 @@ def put_proxy(netflix, pandora):
     os.system('service dnsmasq restart')
 
 def get_ports_info():
-    ports = {}
-    with open(ports_cfg, 'r') as fl:
-        for line in fl:
-            if '\t' in line:
-                key, value = line.split('\t', 1)
-                key = key.strip()
-                value = value.strip()
-                ports[key] = value
-    return ports
+    os.system('iptables-save > %s' % (iptables_cfg)) 
+    with open(iptables_cfg, 'r') as fl:
+        lines = fl.readlines()
+        res = {}
+        for line in lines:
+            if '-A PREROUTING' in line:
+                dic = {}
+                line = line.strip()
+                for item in line.split(' -'):
+                    key, value =  item.split(' ', 1)
+                    dic[key] = value
+                host = dic['-to-destination']
+                port = dic['-dport']
+                res[host] = port
+    return res
 
 @route('/static/:path#.+#', name='static')
 def static(path):
@@ -277,8 +281,6 @@ def index():
     if action == 'add':
         os.system('iptables -t nat -A PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
         os.system('iptables-save > %s' % (iptables_cfg))
-        with open(ports_cfg, 'a') as fl:
-            fl.write('%s\t%d\n' %(host, port))
         
         return '{ "status": "ok", "host": "%s", "port": "%d" }' % (host, port)
     
@@ -300,17 +302,6 @@ def index():
                         os.system('iptables -t nat -D PREROUTING %d' % (num))
                         os.system('iptables-save > %s' % (iptables_cfg))  
         ### End of section ###         
-
-        with open(ports_cfg, 'r') as fl:
-            lines = fl.readlines()
-
-        with open(ports_cfg, 'w') as fl:
-            for line in lines:
-                if host in line:
-                    if '%d' % (port) in line: 
-                        fl.write('')
-                else:
-                    fl.write(line)
 
         return '{ "status": "ok" }'
     
@@ -339,8 +330,8 @@ def index():
     netflix_block, netflix_tunlr = get_proxy_netflix()
     pandora_block, pandora_tunlr = get_proxy_pandora()
     dyn_login, dyn_password, dyn_host = get_dyn_info()
-    ports = get_ports_info()
-    return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns, ports = ports))
+    res = get_ports_info()
+    return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns, res = res))
 
 @route('/info')
 def index():
