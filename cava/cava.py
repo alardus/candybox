@@ -1,4 +1,5 @@
 import hashlib, ConfigParser, os, crypt
+import re, subprocess, shlex
 from bottle import run, route, request, response, redirect, view, template, static_file
 
 CAVA_SECRET = 'cava-hava-cacava'
@@ -20,7 +21,6 @@ if devel:
     ddns              = 'ddns'
     ddns_status       = 'ddns_status'
     proxy             = 'dnsmasq.conf'
-    iptables_cfg      = 'iptables.rules'
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
 
@@ -37,8 +37,21 @@ else:
     dyndns            = '/etc/ddclient.conf'
     ddns              = '/var/log/bearouter/ddns'
     ddns_status       = '/var/log/bearouter/ddns_status'
-    iptables_cfg      = '/etc/ppp/ip-up.d/iptables.rules'
 
+
+def exec_command(cmd):
+    out = ''
+    err = ''
+    code = 1
+    
+    try:
+        proc = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = proc.communicate()
+        code = proc.returncode
+    except:
+        pass
+        
+    return out, err, code
 
 def getAuthCachie():
     try:
@@ -197,24 +210,8 @@ def put_proxy(netflix, pandora):
     os.system('service dnsmasq restart')
 
 def get_ports_info():
-    os.system('iptables-save > %s' % (iptables_cfg)) 
-    with open(iptables_cfg, 'r') as fl:
-        lines = fl.readlines()
-        res = {}
-        for line in lines:
-            if '-A PREROUTING' in line:
-                dic = {}
-                line = line.strip()
-                for item in line.split(' -'):
-                    key, value =  item.split(' ', 1)
-                    dic[key] = value
-                host = dic['-to-destination']
-                port = dic['-dport']
-                if host in res:
-                    res[host].append(port)
-                else:
-                    res[host] = [port]
-    return res
+    out, err, code = exec_command('iptables -t nat -n -L PREROUTING -m tcp')
+    return re.findall(r"\s+tcp\sdpt:(.+)\sto:(.+)$", out, re.MULTILINE)
 
 @route('/static/:path#.+#', name='static')
 def static(path):
@@ -274,7 +271,6 @@ def index():
     host = (request.forms.get('host') or "").strip()
     port = (request.forms.get('port') or "").strip()
     
-    # TODO: host validation?
     if host == '':
         return '{ "status": "error", "message": "wrong host" }'
     
@@ -284,31 +280,20 @@ def index():
         return '{ "status": "error", "message": "wrong port" }'
     
     if action == 'add':
-        os.system('iptables -t nat -A PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
-        os.system('iptables-save > %s' % (iptables_cfg))
+        out, err, code = exec_command('iptables -t nat -A PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
         
-        return '{ "status": "ok", "host": "%s", "port": "%d" }' % (host, port)
+        if code == 0:
+            return '{ "status": "ok", "host": "%s", "port": "%d" }' % (host, port)
+        
+        return '{ "status": "error", "message": "Can not add rule" }'
     
     if action == 'remove':
-        ### Find and delete selected iptables rule ###
-        os.system('iptables-save > %s' % (iptables_cfg))
-        with open(iptables_cfg, 'r') as fl:
-            lines = fl.readlines()
-
-        with open(iptables_cfg, 'w') as fl:
-            for line in lines:
-                if '-A PREROUTING' in line:
-                    fl.write(line)
-
-        with open(iptables_cfg, 'r') as fl:
-            for num, line in enumerate(fl, 1):
-                if host in line:
-                    if '%d' % (port) in line: 
-                        os.system('iptables -t nat -D PREROUTING %d' % (num))
-                        os.system('iptables-save > %s' % (iptables_cfg))  
-        ### End of section ###         
-
-        return '{ "status": "ok" }'
+        out, err, code = exec_command('iptables -t nat -D PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
+        
+        if code == 0:
+            return '{ "status": "ok" }'
+        
+        return '{ "status": "error", "message": "Can not delete rule" }'
     
     return '{ "status": "error", "message": "wrong action" }'
     
