@@ -21,6 +21,7 @@ if devel:
     ddns              = 'ddns'
     ddns_status       = 'ddns_status'
     proxy             = 'dnsmasq.conf'
+    iptables_cfg      = 'iptables.rules'
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
 
@@ -37,19 +38,23 @@ else:
     dyndns            = '/etc/ddclient.conf'
     ddns              = '/var/log/bearouter/ddns'
     ddns_status       = '/var/log/bearouter/ddns_status'
+    iptables_cfg      = '/etc/ppp/ip-up.d/iptables.rules'
 
 
-def exec_command(cmd):
+def exec_iptables_command(cmd):
     out = ''
     err = ''
     code = 1
     
     try:
-        proc = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(shlex.split('iptables %s' % cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = proc.communicate()
         code = proc.returncode
     except:
         pass
+    
+    if code == 0:
+        os.system('iptables-save > %s' % (iptables_cfg))
         
     return out, err, code
 
@@ -210,7 +215,7 @@ def put_proxy(netflix, pandora):
     os.system('service dnsmasq restart')
 
 def get_ports_info():
-    out, err, code = exec_command('iptables -t nat -n -L PREROUTING -m tcp')
+    out, err, code = exec_iptables_command('-t nat -n -L PREROUTING -m tcp')
     return re.findall(r"\s+tcp\sdpt:(.+)\sto:(.+)$", out, re.MULTILINE)
 
 @route('/static/:path#.+#', name='static')
@@ -280,7 +285,7 @@ def index():
         return '{ "status": "error", "message": "wrong port" }'
     
     if action == 'add':
-        out, err, code = exec_command('iptables -t nat -A PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
+        out, err, code = exec_iptables_command('-t nat -A PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
         
         if code == 0:
             return '{ "status": "ok", "host": "%s", "port": "%d" }' % (host, port)
@@ -288,7 +293,7 @@ def index():
         return '{ "status": "error", "message": "Can not add rule" }'
     
     if action == 'remove':
-        out, err, code = exec_command('iptables -t nat -D PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
+        out, err, code = exec_iptables_command('-t nat -D PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
         
         if code == 0:
             return '{ "status": "ok" }'
