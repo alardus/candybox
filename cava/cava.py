@@ -275,7 +275,7 @@ def index():
     action = request.forms.get('action')
     host = (request.forms.get('host') or "").strip()
     port = (request.forms.get('port') or "").strip()
-    print action, host, port
+    
     if host == '':
         return '{ "status": "error", "message": "Wrong host" }'
     
@@ -325,8 +325,8 @@ def index():
     netflix_block, netflix_tunlr = get_proxy_netflix()
     pandora_block, pandora_tunlr = get_proxy_pandora()
     dyn_login, dyn_password, dyn_host = get_dyn_info()
-    res = get_ports_info()
-    return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns, res = res))
+    ports_info = get_ports_info()
+    return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns, ports_info = ports_info))
 
 @route('/info')
 def index():
