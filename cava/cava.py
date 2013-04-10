@@ -2,8 +2,9 @@ import hashlib, ConfigParser, os, crypt
 from bottle import run, route, request, response, redirect, view, template, static_file
 
 CAVA_SECRET = 'cava-hava-cacava'
+devel = os.environ.get('DEVEL', 0) != 0
 
-if os.environ.get('DEVEL', 0) != 0:
+if devel:
     ETC_AUTH_FILE = 'cava-auth'
 
     listen_host = '0.0.0.0'
@@ -209,7 +210,10 @@ def get_ports_info():
                     dic[key] = value
                 host = dic['-to-destination']
                 port = dic['-dport']
-                res[host] = port
+                if host in res:
+                    res[host].append(port)
+                else:
+                    res[host] = [port]
     return res
 
 @route('/static/:path#.+#', name='static')
@@ -230,8 +234,9 @@ def login_post():
         putAuthCachie(pwd)
 
         # Change user 'pi' system password
-        salt_pwd = crypt.crypt(pwd,"8C")
-        os.system('usermod -p %s pi' % salt_pwd)
+        if not devel:
+            salt_pwd = crypt.crypt(pwd,"8C")
+            os.system('usermod -p %s pi' % salt_pwd)
 
         return redirect('/login')
     pwd = hashlib.md5(pwd).hexdigest()
