@@ -270,19 +270,19 @@ def index():
 @route('/port', method="POST")
 def index():
     if not has_auth():
-        return '{ "status": "error", "message": "no auth" }'
+        return '{ "status": "error", "message": "No auth" }'
     
     action = request.forms.get('action')
     host = (request.forms.get('host') or "").strip()
     port = (request.forms.get('port') or "").strip()
-    
+    print action, host, port
     if host == '':
-        return '{ "status": "error", "message": "wrong host" }'
+        return '{ "status": "error", "message": "Wrong host" }'
     
     port = int(port) if port.isdigit() else 0
     
     if port < 1 or port > 65535:
-        return '{ "status": "error", "message": "wrong port" }'
+        return '{ "status": "error", "message": "Wrong port" }'
     
     if action == 'add':
         out, err, code = exec_iptables_command('-t nat -A PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
@@ -300,7 +300,7 @@ def index():
         
         return '{ "status": "error", "message": "Can not delete rule" }'
     
-    return '{ "status": "error", "message": "wrong action" }'
+    return '{ "status": "error", "message": "Wrong action" }'
     
 @route('/password', method = 'POST')
 def index():
