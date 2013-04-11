@@ -1,5 +1,4 @@
-import hashlib, ConfigParser, os, crypt
-import re, subprocess, shlex
+import hashlib, ConfigParser, os, crypt, re, subprocess, shlex
 from bottle import run, route, request, response, redirect, view, template, static_file
 
 CAVA_SECRET = 'cava-hava-cacava'
