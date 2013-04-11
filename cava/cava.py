@@ -216,7 +216,10 @@ def put_proxy(netflix, pandora):
 
 def get_ports_info():
     out, err, code = exec_iptables_command('-t nat -n -L PREROUTING -m tcp')
-    return re.findall(r"\s+tcp\sdpt:(.+)\sto:(.+)$", out, re.MULTILINE)
+    # DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:12345 to:1.1.1.1
+    #                                                             \________/\___/\__/\_____/
+    #                                                              tcp dpt: (.+)  to: (.+)
+    return re.findall(r" tcp dpt:(.+) to:(.+)", out)
 
 @route('/static/:path#.+#', name='static')
 def static(path):
