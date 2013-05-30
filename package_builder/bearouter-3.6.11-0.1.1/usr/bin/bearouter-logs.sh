@@ -28,9 +28,9 @@ pkg=`/usr/bin/dpkg -s bearouter | grep Version: | awk '{print $2}'`
 
 `wget --spider http://ya.ru 2> /dev/null`
 if [ "$?" != 0 ]; then
-	echo "Disconnected from Internet" > $connect
+	echo "Disconnected" > $connect
     else
-    echo "Connected to Internet" > $connect
+    echo "Connected" > $connect
 fi
 
 

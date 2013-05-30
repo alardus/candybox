@@ -1,109 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8">
-    <title>Router - Control panel</title>
+    <title>Control panel - Candybox</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <!-- Le styles -->
-    <link href="static/assets/css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-
-        .form-signin {
-        max-width: 300px;
-        -webkit-border-radius: 5px;
-           -moz-border-radius: 5px;
-                border-radius: 5px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-      }
-      .form-signin .form-signin-heading,
-      .form-signin .checkbox {
-        margin-bottom: 10px;
-      }
-      .form-signin input[type="text"],
-      .form-signin input[type="password"] {
-        font-size: 16px;
-        height: auto;
-        margin-bottom: 15px;
-        padding: 7px 9px;
-      }
-
-    </style>
-    <link href="static/assets/css/bootstrap-responsive.css" rel="stylesheet">
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="static/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="static/assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="static/assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="static/assets/ico/favicon.png">
+    <!-- Bootstrap -->
+    <link href="static/css/bootstrap.css" rel="stylesheet" media="screen">
   </head>
-
   <body>
+    <script src="static/js/jquery.js"></script>
+    <script src="static/js/bootstrap.js"></script>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+  <!-- Check for auth -->
+    %if error:
+    <h3 class="text-error">Ooops, seems like you are not authorized to view this page. Try to login first.</h3>
+    %end
+
+  <!-- Navbar -->
+    <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand">bearouter:</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a href="password">Control panel</a></li>
-              <li class="active"><a>System info</a></li>
-              <li><a href="about">About</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
+        <div class="container-fluid">
+        <a class="brand"><img src="static/img/candybox.png" width="16" height="16"> Candybox</a>
+        <ul class="nav">
+          <li><a href="password">Settings</a></li>
+          <li class="divider-vertical"></li>
+          <li class="active"><a href="">Status</a></li>
+          <li class="divider-vertical"></li>
+          <li><a href="about">About</a></li>
+        </ul>
+      </div>
       </div>
     </div>
 
-    <div class="container">
+  <!-- Body -->
+    <div class="container-fluid">
+    <div class="row-fluid">
+
+      <!--Body content-->
+        <div class="span8 offset2"><br>
+      
+      <!-- Internet connection -->
+      <div class="block-inline">
 
       <section id="info">
-        <h2>System info</h2>
-        <pre>{{connect}}</pre>
+        <h2>Overview main router parameters</h2>
+        <pre>Internet status: {{connect}}</pre>
         <pre>{{ifaces}}</pre>
         <pre>{{dns}}</pre>
         <pre>{{uptime}}</pre>
-        <pre>{{issues}}</pre>
+        <pre>System info: {{issues}}</pre>
       </br>
 
       </section>
 
-    </div> <!-- /container -->
+      </div>
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="static/assets/js/jquery.js"></script>
-    <script src="static/assets/js/bootstrap-transition.js"></script>
-    <script src="static/assets/js/bootstrap-alert.js"></script>
-    <script src="static/assets/js/bootstrap-modal.js"></script>
-    <script src="static/assets/js/bootstrap-dropdown.js"></script>
-    <script src="static/assets/js/bootstrap-scrollspy.js"></script>
-    <script src="static/assets/js/bootstrap-tab.js"></script>
-    <script src="static/assets/js/bootstrap-tooltip.js"></script>
-    <script src="static/assets/js/bootstrap-popover.js"></script>
-    <script src="static/assets/js/bootstrap-button.js"></script>
-    <script src="static/assets/js/bootstrap-collapse.js"></script>
-    <script src="static/assets/js/bootstrap-carousel.js"></script>
-    <script src="static/assets/js/bootstrap-typeahead.js"></script>
+    </div> <!-- row -->
+  </div> <!-- container -->
 
   </body>
 </html>

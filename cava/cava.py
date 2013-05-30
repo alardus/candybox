@@ -220,9 +220,9 @@ def get_ports_info():
     #                                                              tcp dpt: (.+)  to: (.+)
     return re.findall(r" tcp dpt:(.+) to:(.+)", out)
 
-@route('/static/:path#.+#', name='static')
-def static(path):
-    return static_file(path, root='static')
+@route('/static/<filepath:path>')
+def server_static(filepath):
+    return static_file(filepath, root='static')
 
 @route('/login')
 def login():
@@ -267,6 +267,18 @@ def index():
     password = request.forms.get('password')
     host = request.forms.get('host')
     put_dyndns(login, password, host)
+    return redirect('/password')
+
+@route('/network_disconnect', method="POST")
+def index():
+    os.system('service xl2tpd stop')
+    os.system('sleep 5 && /usr/bin/bearouter-logs.sh')
+    return redirect('/password')
+
+@route('/dyndns_disconnect', method="POST")
+def index():
+    os.system('service ddns stop')
+    os.system('sleep 5 && /usr/bin/bearouter-logs.sh')
     return redirect('/password')
 
 @route('/port', method="POST")
