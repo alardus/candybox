@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Control panel - Candybox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="static/css/bootstrap.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <script src="static/js/jquery.js"></script>
+    <script src="static/js/bootstrap.js"></script>
+
+  <!-- Check for auth -->
+    %if error:
+    <h3 class="text-error">Ooops, seems like you are not authorized to view this page. Try to login first.</h3>
+    %end
+
+  <!-- Navbar -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+        <a class="brand"><img src="static/img/candybox.png" width="16" height="16"> Candybox</a>
+        <ul class="nav">
+          <li><a href="password">Settings</a></li>
+          <li class="divider-vertical"></li>
+          <li><a href="info">Status</a></li>
+          <li class="divider-vertical"></li>
+          <li class="active"><a href="">About</a></li>
+        </ul>
+      </div>
+      </div>
+    </div>
+
+  <!-- Body -->
+    <div class="container-fluid">
+    <div class="row-fluid">
+
+      <!--Body content-->
+        <div class="span8 offset2"><br>
+      
+      <!-- Internet connection -->
+      <div class="block-inline">
+
+      <section id="info">
+        <h2>Candybox 1.0</h2>
+        <p>With love to whole world.</p>
+      </br>
+
+      </section>
+
+      </div>
+
+    </div> <!-- row -->
+  </div> <!-- container -->
+
+  </body>
+</html>
