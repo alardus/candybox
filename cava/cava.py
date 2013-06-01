@@ -114,6 +114,15 @@ def put_login_pass(login, pwd):
     return
 
 def get_dyn_info():
+
+    def find_dyn_host(dyndns):
+        fl = open(dyndns, 'r')
+        for line in fl:
+            if 'hostname' in line:
+                hoststr = fl.next()
+        fl.close()
+        return hoststr
+
     with open(dyndns, 'r') as fl:
         lines = fl.readlines()
         login = None
@@ -125,14 +134,24 @@ def get_dyn_info():
                 key = key.strip()
                 if key == "login":
                     login = value.strip()
-                elif key == "pasword":
+                elif key == "password":
                     password = value.strip()
-                elif key == "host":
-                    host = value.strip()
+        host = find_dyn_host(dyndns)        
         return login, password, host
 
 
 def put_dyndns(login, password, host):
+
+    def find_dyn_host(dyndns):
+        fl = open(dyndns, 'r')
+        for line in fl:
+            if 'hostname' in line:
+                hoststr = fl.next()
+        fl.close()
+        return hoststr
+
+    hoststr = find_dyn_host(dyndns)
+
     fl = open(dyndns, 'r')
     lines = fl.readlines()
     fl.close()
@@ -143,15 +162,20 @@ def put_dyndns(login, password, host):
             pass
             if not "password" in line:
                 pass
-                if not "host" in line:
-                    fl.write(line)
+                if not "hostname" in line:
+                    pass 
+                    if not hoststr in line:
+                        fl.write(line)
     fl.close()
 
     fl = open(dyndns, 'a')
     fl.write('login=' + login + '\n')
     fl.write('password=' + password + '\n')
-    fl.write('host=' + host + '\n')
+    fl.write('# DynDNS hostname goes next' + '\n')
+    fl.write(host + '\n')
     fl.close()
+
+    os.system('rm /tmp/ddclient.cache')
     os.system('/usr/sbin/ddclient')
     os.system('/usr/bin/bearouter-logs.sh')
 
@@ -257,7 +281,7 @@ def index():
     netflix = request.forms.get('netflix')
     pandora = request.forms.get('pandora')
     put_proxy(netflix, pandora)
-    return redirect('/password')
+    return redirect('/setup')
 
 @route('/dyndns', method="POST")
 def index():
@@ -267,19 +291,54 @@ def index():
     password = request.forms.get('password')
     host = request.forms.get('host')
     put_dyndns(login, password, host)
-    return redirect('/password')
+    return redirect('/setup')
 
 @route('/network_disconnect', method="POST")
 def index():
     os.system('service xl2tpd stop')
     os.system('sleep 5 && /usr/bin/bearouter-logs.sh')
-    return redirect('/password')
+    return redirect('/setup')
 
 @route('/dyndns_disconnect', method="POST")
 def index():
-    os.system('service ddns stop')
-    os.system('sleep 5 && /usr/bin/bearouter-logs.sh')
-    return redirect('/password')
+
+    def find_dyn_host(dyndns):
+        fl = open(dyndns, 'r')
+        for line in fl:
+            if 'hostname' in line:
+                hoststr = fl.next()
+        fl.close()
+        return hoststr
+
+    hoststr = find_dyn_host(dyndns)
+
+    fl = open(dyndns, 'r')
+    lines = fl.readlines()
+    fl.close()
+
+    fl = open(dyndns, 'w')
+    for line in lines:
+        if not "login" in line:
+            pass
+            if not "password" in line:
+                pass
+                if not "hostname" in line:
+                    pass 
+                    if not hoststr in line:
+                        fl.write(line)
+    fl.close()
+
+    fl = open(dyndns, 'a')
+    fl.write('login=' + 'login' + '\n')
+    fl.write('password=' + 'password' + '\n')
+    fl.write('# DynDNS hostname goes next' + '\n')
+    fl.write('host' + '\n')
+    fl.close()
+
+    os.system('rm /tmp/ddclient.cache')
+    os.system('/usr/sbin/ddclient')
+    os.system('/usr/bin/bearouter-logs.sh')
+    return redirect('/setup')
 
 @route('/port', method="POST")
 def index():
@@ -324,25 +383,34 @@ def index():
     login = request.forms.get('login', None)
     pwd   = request.forms.get('pwd',   None)
     put_login_pass(login, pwd)
-    return redirect('/password')
+    return redirect('/setup')
 
-@route('/password')
+@route('/setup')
 @route('/')
 def index():
     if not has_auth(): return redirect('/login')
 
     login, pwd = get_login_pass()
-    cnn = open(connect).read()
-    cnn = cnn.strip()
+
+    # Set badge for connection state
+    connection_badge = open(connect).read()
+    connection_badge = connection_badge.strip()
+    if connection_badge == "Connected":
+        cnn = 'Connected'
+        cnn_badge = 'label-success'
+    else:
+        cnn = 'Disconnected'
+        cnn_badge = 'label-important'
+
     dns = open(ddns_status).read()
     dns = dns.strip()
     netflix_block, netflix_tunlr = get_proxy_netflix()
     pandora_block, pandora_tunlr = get_proxy_pandora()
     dyn_login, dyn_password, dyn_host = get_dyn_info()
     ports_info = get_ports_info()
-    return template('password', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns, ports_info = ports_info))
+    return template('setup', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, badge = cnn_badge, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns, ports_info = ports_info))
 
-@route('/info')
+@route('/status')
 def index():
     if not has_auth(): return redirect('/login')
 
@@ -351,6 +419,10 @@ def index():
     ifs = open(ifaces).read()
     cnn = open(connect).read()
     dns = open(ddns).read()
-    return template('info', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn, dns = dns))
+    return template('status', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn, dns = dns))
+
+@route('/about')
+def index():
+    return template('about', dict(error = None))
 
 run(host = listen_host, port=8080, reloader=bottle_reloader)
