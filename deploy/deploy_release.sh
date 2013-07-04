@@ -1,12 +1,13 @@
 #!/bin/bash
 
 ###
-# bearouter project / 2012-2013
-# bearouter.org
+# Candybox for Raspberry Pi. Turn Pi into router. 
 
-# Version for Raspberry Pi. Turn it into router. 
+# Information available at project homepage:
+# http://www.candyboxrouter.org
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
+# Copyright (c) 2013, Alexander Bykov
 ###
 
 clear

@@ -1,8 +1,8 @@
 ###
-# bearouter project / 2012-2013
-# bearouter.org
-
 # dnsmasq config for DHCP and DNS servers parameters.
+
+# Information and documentation available at project homepage:
+# http://www.candyboxrouter.org
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 ###

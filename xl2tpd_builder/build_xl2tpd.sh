@@ -1,12 +1,12 @@
 #!/bin/bash
 
 ###
-# bearouter project / 2012-2013
-# bearouter.org
-
 # Build xl2tpd with l2tp_* kernel modules support 
 
-# Author: Alexander Bykov <alardus@alardus.org>
+# Information available at project homepage:
+# http://www.candyboxrouter.org
+
+# Maintainer: Alexander Bykov <alardus@alardus.org>
 ###
 
 wget http://ftp.de.debian.org/debian/pool/main/x/xl2tpd/xl2tpd_1.3.1+dfsg.orig.tar.gz

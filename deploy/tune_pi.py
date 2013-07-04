@@ -1,8 +1,8 @@
 ###
-# bearouter project / 2012-2013
-# bearouter.org
-
 # Setting up RPi params without running raspi-config
+
+# Information available at project homepage:
+# http://www.candyboxrouter.org
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 ###

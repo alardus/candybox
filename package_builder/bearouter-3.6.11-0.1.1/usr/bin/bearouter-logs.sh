@@ -1,14 +1,13 @@
 #!/bin/bash
 
 ###
-# bearouter project / 2012-2013
-# bearouter.org
-
 # Script prepare logs for showing system info at our web configuration tool
+
+# Information available at project homepage:
+# http://www.candyboxrouter.org
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 ###
-
 
 mkdir /var/log/bearouter
 connect=/var/log/bearouter/connect

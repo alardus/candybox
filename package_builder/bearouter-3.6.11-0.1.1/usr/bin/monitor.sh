@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ###
-# bearouter project / 2012-2013
-# bearouter.org
-
 # Monitoring existing xl2tpd process and ppp0 interface
+
+# Information available at project homepage:
+# http://www.candyboxrouter.org
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 ###

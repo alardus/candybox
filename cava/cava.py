@@ -1,3 +1,13 @@
+"""
+Candybox - it's a fully configured and ready to run software router for Raspberry Pi.
+All information about project and it's latest version available at:
+
+http://www.candyboxrouter.org
+
+Maintainer: Alexander Bykov <alardus@alardus.org>
+Copyright (c) 2013, Alexander Bykov
+"""
+
 import hashlib, ConfigParser, os, crypt, re, subprocess, shlex
 from bottle import run, route, request, response, redirect, view, template, static_file
 

@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ###
-# bearouter project / 2012-2013
-# bearouter.org
-
 # This script build l2tp modules for current kernel 
+
+# Information available at project homepage:
+# http://www.candyboxrouter.org
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 ###

@@ -1,8 +1,8 @@
 ###
-# bearouter project / 2012-2013
-# bearouter.org
-
 # Set of iptables NAT rules in Beeline (Corbina) network
+
+# Information available at project homepage:
+# http://www.candyboxrouter.org
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 ###

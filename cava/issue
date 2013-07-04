@@ -1,1 +1,4 @@
-bujubadsfadsfa
+# fake data file for working in devel mode
+# don't use it at release version
+
+releasename

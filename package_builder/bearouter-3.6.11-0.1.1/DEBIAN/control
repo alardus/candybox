@@ -1,8 +1,8 @@
 Package: bearouter
-Version: 3.6.11-0.1.1
+Version: 3.6.11-0.0.1
 Section: admin
 Installed-Size: 3100
 Maintainer: Alexander Bykov <alardus@alardus.org>
 Architecture: all
 Depends: ppp, python
-Description: bearouter project files and configs
+Description: candybox project files and configs
