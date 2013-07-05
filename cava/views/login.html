@@ -18,19 +18,59 @@
         <!-- First login -->
         %if isnew:
         <fieldset>
-          <legend>Welcome to Candybox</legend>
-          <p>This is your first login. For security reasons we need to change password for default user (in Raspbian he's called "pi"). This password also will be using for access to Candybox control panel.</p>
-          <input name="password" type="password" style="width: 80%" placeholder="Enter new password">
-          <button type="submit" class="btn btn-primary" style="float:right">Save</button>
+          <legend>Here's your Candybox</legend>
+
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <img src="static/img/candybox_l.png">
+                        </td>
+                        <td>
+                          This is your first login. For security reasons we need to change password
+                          for default user (in Raspbian he's called "pi"). This password also will
+                          be using for access to Candybox control panel.
+                          <br><br>
+                          <div class="control-group">
+                            <div class="controls">
+                              <input name="password" type="password" style="width: 80%" placeholder="Enter new password">
+                              <button type="submit" class="btn btn-primary" style="float:right">Save</button>
+                                <br>
+                              </button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
         </fieldset>
 
         <!-- Second login -->
         %else:
         <fieldset>
-          <legend>Login to Candybox</legend>
-          <p>For accessing Candybox control panel enter your password bellow.</p>
-          <input name="password" type="password" style="width: 80%" placeholder="Password">
-          <button type="submit" class="btn btn-primary" style="float:right">Login</button>
+          <legend>Here's your Candybox</legend>
+
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <img src="static/img/candybox_m.png" width="72" height="72">
+                        </td>
+                        <td>
+                          For accessing Candybox control panel enter your password bellow.
+                          <br><br>
+                          <div class="control-group">
+                            <div class="controls">
+                              <input name="password" type="password" style="width: 80%" placeholder="Password">
+                              <button type="submit" class="btn btn-primary" style="float:right">Login</button>
+                                <br>
+                              </button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
         </fieldset>
         %end  
     </form>

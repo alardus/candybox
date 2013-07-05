@@ -96,7 +96,7 @@ def get_login_pass():
                 [username, dot, password] = line
 
                 # Change password for nothing for security reason
-                password = 'enter_your_password_again'
+                # password = 'enter_your_password_again'
 
                 return username, password
     return None, None
