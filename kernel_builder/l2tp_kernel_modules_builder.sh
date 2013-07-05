@@ -4,7 +4,7 @@
 # This script build l2tp modules for current kernel 
 
 # Information available at project homepage:
-# http://www.candyboxrouter.org
+# http://www.candyboxrouter.com
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 ###

@@ -4,7 +4,7 @@
 # Candybox for Raspberry Pi. Turn Pi into router. 
 
 # Information available at project homepage:
-# http://www.candyboxrouter.org
+# http://www.candyboxrouter.com
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 # Copyright (c) 2013, Alexander Bykov
@@ -63,10 +63,10 @@ cp etc/ddclient.conf /etc/ddclient.conf
 echo "Updating apt cache and installing packages..."
 sleep 5
 apt-get update 
-LC_ALL=C apt-get install dnsmasq xl2tpd-kernel bearouter fail2ban ddclient host uuid-runtime
+LC_ALL=C apt-get install dnsmasq xl2tpd-kernel candybox fail2ban ddclient host uuid-runtime
 	test_package "dnsmasq"
 	test_package "xl2tpd-kernel"
-	test_package "bearouter"
+	test_package "candybox"
 	test_package "fail2ban"
 	test_package "ddclient"
 	test_package "host"
@@ -123,7 +123,7 @@ cp etc/profile.d/raspi-config.sh /etc/profile.d/raspi-config.sh
 # Updating crontab for root
 echo "0 23 * * * /usr/bin/stat.sh" > /tmp/cronjob
 	test_error
-echo "*/1 * * * * /usr/bin/bearouter-logs.sh" >> /tmp/cronjob
+echo "*/1 * * * * /usr/bin/candybox-logs.sh" >> /tmp/cronjob
 	test_error
 echo "*/5 * * * * /usr/bin/monitor.sh" >> /tmp/cronjob
 	test_error
@@ -136,14 +136,14 @@ rm /tmp/cronjob
 	test_error
 ###
 
-# Fix for cava's system section. Preparing for 'bearouter-logs' script will not working
-mkdir /var/log/bearouter
-echo "" > /var/log/bearouter/connect
-echo "" > /var/log/bearouter/uptime
-echo "" > /var/log/bearouter/ifaces
-echo "" > /var/log/bearouter/issue
-echo "" > /var/log/bearouter/ddns
-echo "" > /var/log/bearouter/ddns_status
+# Fix for candybox system section. Preparing for 'candybox-logs' script will not working
+mkdir /var/log/candybox
+echo "" > /var/log/candybox/connect
+echo "" > /var/log/candybox/uptime
+echo "" > /var/log/candybox/ifaces
+echo "" > /var/log/candybox/issue
+echo "" > /var/log/candybox/ddns
+echo "" > /var/log/candybox/ddns_status
 ###
 
 echo "Completed."

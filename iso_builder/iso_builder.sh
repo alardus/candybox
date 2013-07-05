@@ -12,7 +12,7 @@ function test_package {
 test_package "kpartx"
 
 echo "Copying original iso..."
-cp ./2013-02-09-wheezy-raspbian.img ./pi.img
+cp ./2013-05-25-wheezy-raspbian.img ./pi.img
 
 echo "Copying partition table from SD..."
 dd if=/dev/sdb1 of=./sdb1.img bs=4096 conv=notrunc,noerror

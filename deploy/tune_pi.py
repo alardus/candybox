@@ -2,7 +2,7 @@
 # Setting up RPi params without running raspi-config
 
 # Information available at project homepage:
-# http://www.candyboxrouter.org
+# http://www.candyboxrouter.com
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 ###

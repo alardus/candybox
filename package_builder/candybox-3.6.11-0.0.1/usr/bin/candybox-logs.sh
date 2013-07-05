@@ -4,22 +4,22 @@
 # Script prepare logs for showing system info at our web configuration tool
 
 # Information available at project homepage:
-# http://www.candyboxrouter.org
+# http://www.candyboxrouter.com
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 ###
 
-mkdir /var/log/bearouter
-connect=/var/log/bearouter/connect
-uptime=/var/log/bearouter/uptime
-ifaces=/var/log/bearouter/ifaces
-issue=/var/log/bearouter/issue
-ddns=/var/log/bearouter/ddns
-ddns_status=/var/log/bearouter/ddns_status
+mkdir /var/log/ 
+connect=/var/log/candybox/connect
+uptime=/var/log/candybox/uptime
+ifaces=/var/log/candybox/ifaces
+issue=/var/log/candybox/issue
+ddns=/var/log/candybox/ddns
+ddns_status=/var/log/candybox/ddns_status
 
 os=`cat /etc/issue | head -n1 |awk '{print $1, $2}'`
 
-pkg=`/usr/bin/dpkg -s bearouter | grep Version: | awk '{print $2}'`
+pkg=`/usr/bin/dpkg -s candybox | grep Version: | awk '{print $2}'`
 	if [ "$pkg" == "" ]; then 
 		pkg="not installed"
 	fi
@@ -48,9 +48,9 @@ for i in $eth_list; do
 	fi
 	done 
 
-echo "$os, bearouter configs $pkg." > $issue
+echo "$os, candybox configs $pkg." > $issue
 
-echo "DydDNS client status:" > $ddns
+echo "DynDNS client status:" > $ddns
 cat /var/log/syslog | grep ddclient | grep SUCCESS | tail -n1 | awk {'print $8, $10, $11, $12, $13, $14'} >> $ddns
 
 # And again with minimal info for /password template

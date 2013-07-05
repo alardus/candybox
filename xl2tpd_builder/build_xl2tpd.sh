@@ -4,7 +4,7 @@
 # Build xl2tpd with l2tp_* kernel modules support 
 
 # Information available at project homepage:
-# http://www.candyboxrouter.org
+# http://www.candyboxrouter.com
 
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 ###

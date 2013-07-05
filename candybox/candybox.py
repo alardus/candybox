@@ -2,7 +2,7 @@
 Candybox - it's a fully configured and ready to run software router for Raspberry Pi.
 All information about project and it's latest version available at:
 
-http://www.candyboxrouter.org
+http://www.candyboxrouter.com
 
 Maintainer: Alexander Bykov <alardus@alardus.org>
 Copyright (c) 2013, Alexander Bykov
@@ -39,14 +39,14 @@ else:
 
     etc_chap_secrets = '/etc/ppp/chap-secrets'
     etc_xl2tpd_conf   = '/etc/xl2tpd/xl2tpd.conf'
-    issues            = '/var/log/bearouter/issue'
-    uptime            = '/var/log/bearouter/uptime'
-    ifaces            = '/var/log/bearouter/ifaces'
-    connect           = '/var/log/bearouter/connect'
+    issues            = '/var/log/candybox/issue'
+    uptime            = '/var/log/candybox/uptime'
+    ifaces            = '/var/log/candybox/ifaces'
+    connect           = '/var/log/candybox/connect'
     proxy             = '/etc/dnsmasq.conf'
     dyndns            = '/etc/ddclient.conf'
-    ddns              = '/var/log/bearouter/ddns'
-    ddns_status       = '/var/log/bearouter/ddns_status'
+    ddns              = '/var/log/candybox/ddns'
+    ddns_status       = '/var/log/candybox/ddns_status'
     iptables_cfg      = '/etc/ppp/ip-up.d/iptables.rules'
 
 
@@ -187,7 +187,7 @@ def put_dyndns(login, password, host):
 
     os.system('rm /tmp/ddclient.cache')
     os.system('/usr/sbin/ddclient')
-    os.system('/usr/bin/bearouter-logs.sh')
+    os.system('/usr/bin/candybox-logs.sh')
 
 def get_proxy_netflix():
     netflix_tunlr='142.54.177.158'
@@ -306,7 +306,7 @@ def index():
 @route('/network_disconnect', method="POST")
 def index():
     os.system('service xl2tpd stop')
-    os.system('sleep 5 && /usr/bin/bearouter-logs.sh')
+    os.system('sleep 5 && /usr/bin/candybox-logs.sh')
     return redirect('/setup')
 
 @route('/dyndns_disconnect', method="POST")
@@ -347,7 +347,7 @@ def index():
 
     os.system('rm /tmp/ddclient.cache')
     os.system('/usr/sbin/ddclient')
-    os.system('/usr/bin/bearouter-logs.sh')
+    os.system('/usr/bin/candybox-logs.sh')
     return redirect('/setup')
 
 @route('/port', method="POST")

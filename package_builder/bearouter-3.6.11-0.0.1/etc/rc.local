@@ -1,6 +1,0 @@
-#!/bin/sh -e
-
-# xl2tpd configurator
-/usr/bin/cava.sh
-
-exit 0

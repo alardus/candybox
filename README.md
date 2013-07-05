@@ -36,7 +36,7 @@ Candybox
 <a name="how-to-use-it" class="anchor" href="#how-to-use-it"><span class="octicon octicon-link"></span></a>How to use it</h3>
 
 <ul>
-<li><a href="http://bearouter.org/beta/">Download</a> latest Candybox release</li>
+<li><a href="http://candyboxrouter.com">Download</a> latest Candybox release</li>
 <li>To use an image file, you will need to unzip it and write it to a suitable SD card using the UNIX tool dd. Windows users should use <a href="http://sourceforge.net/projects/win32diskimager/">Win32DiskImager</a>. Do not try to drag and drop or otherwise copy over the image without using dd or Win32DiskImager &mdash; it won’t work. If you’re still not clear on what to do, the community on the Raspberry Pi Wiki has written a guide for beginners on how to set up your SD card</li>
 <li>Plug in your WAN cable to the ethernet port on RPi and LAN cable to the USB-Ethernet adapter which must be connected to one of USB port</li>
 <li>Plug in into power source and wait while it booting up</li>
