@@ -1,7 +1,7 @@
 Package: candybox
-Version: 3.6.11-0.0.1
+Version: 0.0.1
 Section: admin
-Installed-Size: 3100
+Installed-Size: 836
 Maintainer: Alexander Bykov <alardus@alardus.org>
 Architecture: all
 Depends: ppp, python

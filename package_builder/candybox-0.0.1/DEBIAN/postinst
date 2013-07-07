@@ -5,10 +5,3 @@ pid=`/bin/ps -e f | /bin/grep [c]andybox.py | /usr/bin/awk '{print $1}'`
 kill -9 $pid
 /usr/bin/candybox.sh
 
-# Installing new kernel modules
-rmmod l2tp_core
-rmmod l2tp_ppp
-
-depmod -a 
-modprobe l2tp_core
-modprobe l2tp_ppp

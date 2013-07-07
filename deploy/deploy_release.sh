@@ -63,9 +63,10 @@ cp etc/ddclient.conf /etc/ddclient.conf
 echo "Updating apt cache and installing packages..."
 sleep 5
 apt-get update 
-LC_ALL=C apt-get install dnsmasq xl2tpd-kernel candybox fail2ban ddclient host uuid-runtime
+LC_ALL=C apt-get install dnsmasq xl2tpd-kernel xl2tpd-modules candybox fail2ban ddclient host uuid-runtime
 	test_package "dnsmasq"
 	test_package "xl2tpd-kernel"
+	test_package "xl2tpd-modules"
 	test_package "candybox"
 	test_package "fail2ban"
 	test_package "ddclient"

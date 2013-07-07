@@ -1,0 +1,8 @@
+Package: xl2tpd-modules
+Version: 3.6.11
+Section: admin
+Installed-Size: 80
+Maintainer: Alexander Bykov <alardus@alardus.org>
+Architecture: all
+Depends: ppp, python, raspberrypi-bootloader
+Description: l2tp_* kernel modules 

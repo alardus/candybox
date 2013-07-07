@@ -16,7 +16,7 @@ deploy
 * Install original image of Raspbian on SD, boot RPi from it
 * Git clone 'deploy' on a target machine and run 'sudo ./deploy_release.sh'
 
-###Make new RPiR ISO###
+###Make new Candybox ISO###
 * Run 'iso_builder.sh' (but first check for device name in 'dd' command)
 
 ###Content description###
