@@ -38,7 +38,7 @@
       <!-- Sidebar content -->
         <div class="span2"><br>
           <div class="well sidebar-nav">
-              <p><i>Note:</i> Here you can setup many of features that people needed from router. All other setting can be accessed by SSH: <code>$ ssh 192.168.0.1</code></p>
+              <p><i>Note:</i> Here you can setup many of features that you may need from a router. All other setting can be accessed by SSH: <code>$ ssh 192.168.0.1</code></p>
           </div>
       </div>
 
@@ -48,7 +48,7 @@
       <!-- Internet connection -->
       <form id="form" class="block-inline" action="/password" method="POST">
           <h2>Internet <span class="label {{badge}}">{{connect}}</span></h2>
-          <p>Beeline ISP using VPN for giving users access to the Internet. To establish connection, enter your username and password bellow:</p>
+          <p>Beeline ISP using VPN to get access to the Internet. To establish connection, enter your username and password bellow:</p>
             <input name="login" type="text" class="input-large" value={{login}} placeholder="Username"><br>
             <input name="pwd" type="password" class="input-large" value={{pwd}} placeholder="Password"><br> 
             <button class="btn" type="submit">Save &amp; connect</button>
@@ -58,14 +58,14 @@
       <!-- Netflix and Pandora -->
       <form class="block-inline" action="/proxy" method="POST">
           <h2>Netflix and Pandora</h2>
-          <p>If you are living outside the US you can't use Netflix, Pandora and some other services in normal way. To access them we need to use proxy services located in the US.</p> 
-          <p>Not all of they are free for use, so you may be need to create an account first before you can start using them. Currently we offer support only for <a href="http://tunlr.net">Tunlr</a> (free, but not support Netflix) and <a href="http://www.unblock-us.com">Unblock-US</a> (paid and support everything).</p><br>
+          <p>If you are living outside the US you can't use Netflix, Pandora and some other services in a normal way. To access them you need to use proxy services located in the US.</p> 
+          <p>Not all of them are free for use, so you may need to create account before you using them. Currently we offer support only for <a href="http://tunlr.net">Tunlr</a> (free, but does not support Netflix) and <a href="http://www.unblock-us.com">Unblock-US</a> (requires payment and supports everything).</p><br>
 
         <table class="table table-striped">
         <tr>
           <td>Select service used for access <b><i>Netflix</i></b></td>
           <td><select name="netflix">
-              <option value="208.122.23.22" {{netflix_block}}>Unblock-US (paid, need an account)</option>
+              <option value="208.122.23.22" {{netflix_block}}>Unblock-US (requires payment)</option>
                 <option value="142.54.177.158" {{netflix_tunlr}}>Tunlr (free)</option></select>
             </td>
         </tr>
@@ -73,7 +73,7 @@
         <tr>
           <td>Select service used for access <b><i>Pandora</i></b> </td>
           <td><select name="pandora">
-              <option value="208.122.23.22" {{pandora_block}}>Unblock-US (paid, need an account)</option>
+              <option value="208.122.23.22" {{pandora_block}}>Unblock-US (requires payment)</option>
               <option value="142.54.177.158" {{pandora_tunlr}}>Tunlr (free)</option>
             </select></td>
         </tr>
