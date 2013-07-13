@@ -13,7 +13,7 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Candybox by alardus</title>
+    <title>Candybox - router for Raspberry Pi</title>
   </head>
 
   <body>
@@ -29,55 +29,155 @@
       <div class="inner clearfix">
         <section id="main-content">
           <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<a name="what-is-candybox" class="anchor" href="#what-is-candybox"><span class="octicon octicon-link"></span></a>What is Candybox</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>Candybox turns your Raspberry Pi into router. Just connect RPi to your network, install latest Candybox release on SD card &mdash; and you are online.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>The best feature of Candybox router &mdash; it is already fully configured, including all components you may need from your router (dhcp, dns, ddns, pptp, l2tp kernel modules, etc.), and all of them are ready for you to use.</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>In addition, Candybox supports Netflix and Pandora. As you know, you can't use those web services outside the US. But we eliminated this problem in Candybox: no matter where you are, you can use Netflix and/or Pandora whenever you feel like it.</p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<p>Another good thing about Candybox is its web control panel. We know how annoying it is to make small changes in router setup through command line. For these situations we created a simple web configurator, which allows you to configure many features that you might need while using your router.</p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>Want to add port forwarding to internal host? &mdash; No problem. Needed to setup DDNS hostname? &mdash; Just put your credential at DDNS section.</p>
+
+<p>Simple, right?</p>
 
 <h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<a name="how-its-looks" class="anchor" href="#how-its-looks"><span class="octicon octicon-link"></span></a>What it looks like</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>
+<a href="http://repo.candyboxrouter.com/img/candybox-setup.png"><img src="http://repo.candyboxrouter.com/img/candybox-setup.png" width="300" height="210"></a>
+<a href="http://repo.candyboxrouter.com/img/candybox-info.png"><img src="http://repo.candyboxrouter.com/img/candybox-info.png" width="300" height="210"></a>
+</p>
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a name="what-do-you-need-to-run-it" class="anchor" href="#what-do-you-need-to-run-it"><span class="octicon octicon-link"></span></a>What you need to run it</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<ul>
+<li>Raspberry Pi (model B)</li>
+<li>WiFi router (of course you can use any of Raspbian compatible USB WiFi-dongle, but you will need to configure it manually — currently we don’t support them in default settings)</li>
+<li>USB-Ethernet adapter (we use one from Apple)</li>
+<li>SD card (minimum 2GB and class 10 recommended)</li>
+<li>Beeline (ex. Corbina) ISP Ethernet connection</li>
+<li>Latest Candybox release build for RPi</li>
+</ul><h3>
+<a name="how-to-use-it" class="anchor" href="#how-to-use-it"><span class="octicon octicon-link"></span></a>How to use it</h3>
+
+<ul>
+<li><a href="http://repo.candyboxrouter.com/release/candybox-0.0.1.img.gz">Download</a> latest Candybox release</li>
+<li>To use an image file, you need to unzip it and write it on a suitable SD card, using the UNIX tool dd. Windows users should use <a href="http://sourceforge.net/projects/win32diskimager/">Win32DiskImager</a>. Do not try to drag and drop or copy the image without using dd or Win32DiskImager &mdash; it won’t work</li>
+<li>Plug in your WAN cable to the RPi Ethernet port and LAN cable to the USB-Ethernet adapter, that is connected to one of the USB ports</li>
+<li>Plug in into power source and wait while it’s booting up</li>
+<li>Restart network on your computer to obtain new IP address from RPi</li>
+<li>Point your browser to '192.168.0.1:8080', create a password for accessing Candybox configurator, enter your credentials for Beeline (ex. Corbina) ISP and click "Save and connect"</li>
+</ul><h3>
+<a name="technical-overview" class="anchor" href="#technical-overview"><span class="octicon octicon-link"></span></a>Technical overview</h3>
+
+<p><strong>Supported ISPs</strong></p>
+
+<ul>
+<li>Beeline (ex. Corbina) over L2TP (for now)</li>
+
+</ul><p><strong>Web interface features</strong></p>
+<ul>
+<li>Setup internet connection, turn it on or off</li>
+<li>Use Netflix and Pandora at any devices at your home</li>
+<li>Use DDNS for accessing your home computer with dynamic IP</li>
+<li>Manage port forwarding for any services of your home network (eg. torrents or web/ftp server) without manually entering iptables rules</li>
+<li>Observe system status and status of its main services</li>
+
+</ul><p><strong>What’s in the box</strong></p>
+<ul>
+<li>raspbian 'wheezy' with 3.6 kernel and l2tp_* kernel modules</li>
+<li>xl2tpd with kernel modules support for decrease CPU loading</li>
+<li>dnsmasq as DHCP/DNS server with logging of DHCP leases</li>
+<li>set of scripts for monitoring and repairing connection</li>
+<li>fail2ban for intrusion prevention</li>
+<li>ddclient for DynDNS support</li>
+<li>web configurator</li>
+</ul><h3>
+
+<a name="authors" class="anchor" href="#authors"><span class="octicon octicon-link"></span></a>Authors</h3>
+<p>Candybox was invented and created by:</p>
+<ul>
+<li>Alexander Bykov (<a href="https://github.com/alardus" class="user-mention">@alardus</a>)</li>
+<li>Grigory Bakunov (<a href="https://github.com/bobuk" class="user-mention">@bobuk</a>)</li>
+<li>Danil Ivanov (<a href="https://github.com/imfo" class="user-mention">@imfo</a>)</li>
+<li>Alexey Markin</li>
+<li>Anatoly Lebedev </li>
+<li>Tatiana Bykova</li>
+</ul>
+
+<h3>
+<a name="contributors" class="anchor" href="#contributors"><span class="octicon octicon-link"></span></a>Contributors</h3>
+<p>If you want to help make Candybox better, feel free to do so.<br> Join project on GitHub and make a pull request.</p>
+
+
+
         </section>
 
         <aside id="sidebar">
-          <a href="https://github.com/alardus/candybox/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/alardus/candybox/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
+          <a href="http://repo.candyboxrouter.com/release/candybox-0.0.1.img.gz" class="button">
+            Download
+            <small>version 0.0.1</small>
           </a>
 
-          <p class="repo-owner"><a href="https://github.com/alardus/candybox"></a> is maintained by <a href="https://github.com/alardus">alardus</a>.</p>
+          <p class="repo-owner">Requirements for running Candybox:</p>
+
+          <p>
+          &ndash; Raspberry Pi (model B);<br>
+          &ndash; External WiFi router;<br>
+          &ndash; USB-Ethernet adapter;<br>
+          &ndash; SD card (2GB minimum);<br>
+          &ndash; Beeline (ex. Corbina) ISP Ethernet connection.<br>
+          </p>
+
+          <p class="repo-owner"><a href="https://github.com/alardus/candybox">Project</a> is maintained by <a href="https://github.com/alardus">alardus</a>.</p>
 
           <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
         </aside>
       </div>
     </div>
 
-  
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter21758044 = new Ya.Metrika({id:21758044,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/21758044" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<!-- Google analytics counter -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-299686-9', 'candyboxrouter.com');
+  ga('send', 'pageview');
+</script>
+<!-- Google analytics counter -->
+
   </body>
 </html>
