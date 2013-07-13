@@ -18,8 +18,8 @@ Candybox
 <a name="how-its-looks" class="anchor" href="#how-its-looks"><span class="octicon octicon-link"></span></a>What it looks like</h3>
 
 <p>
-<a href="http://img-fotki.yandex.ru/get/9324/7694291.6b/0_8e3ab_71311ea1_XL.png"><img src="http://img-fotki.yandex.ru/get/9324/7694291.6b/0_8e3ab_71311ea1_M.png"></a>
-<a href="http://img-fotki.yandex.ru/get/9313/7694291.6b/0_8e3ac_a72a8554_XL.png"><img src="http://img-fotki.yandex.ru/get/9313/7694291.6b/0_8e3ac_a72a8554_M.png"></a>
+<a href="http://repo.candyboxrouter.com/img/candybox-setup.png"><img src="http://repo.candyboxrouter.com/img/candybox-setup.png" width="300" height="210"></a>
+<a href="http://repo.candyboxrouter.com/img/candybox-info.png"><img src="http://repo.candyboxrouter.com/img/candybox-info.png" width="300" height="210"></a>
 </p>
 
 <h3>

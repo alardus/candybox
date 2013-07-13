@@ -2,7 +2,6 @@
 
 # Looking for running candybox and try to restart it
 pid=`/bin/ps -e f | /bin/grep [c]andybox.py | /usr/bin/awk '{print $1}'`
-kill -9 $pid
-
+/bin/kill -9 $pid
 /bin/rm -rf /usr/share/candybox
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Looking for running candybox and try to restart it
-pid=`/bin/ps -e f | /bin/grep [c]andybox.py | /usr/bin/awk '{print $1}'`
-kill -9 $pid
+#pid=`/bin/ps -e f | /bin/grep [c]andybox.py | /usr/bin/awk '{print $1}'`
+#/bin/kill -9 $pid
 /usr/bin/candybox.sh
 
