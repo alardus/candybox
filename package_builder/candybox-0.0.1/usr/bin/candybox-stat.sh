@@ -31,4 +31,4 @@ os_ver=`cat /etc/issue | awk '{print $2}'`
 package_ver=`dpkg -s candybox | grep Version | awk '{print $2}'`
 
 #Sending data 
-curl -X POST http://candyboxrouter.com/stat?uuid=$uuid'&'os_name=$os_name'&'os_ver=$os_ver'&'package_ver=$package_ver
+curl -X POST http://repo.candyboxrouter.com/stat?uuid=$uuid'&'os_name=$os_name'&'os_ver=$os_ver'&'package_ver=$package_ver
