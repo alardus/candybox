@@ -36,7 +36,7 @@ Candybox
 <a name="how-to-use-it" class="anchor" href="#how-to-use-it"><span class="octicon octicon-link"></span></a>How to use it</h3>
 
 <ul>
-<li><a href="http://bearouter.org/beta/">Download</a> latest Candybox release</li>
+<li><a href="http://repo.candyboxrouter.com/release/candybox-0.0.1.img.gz">Download</a> latest Candybox release</li>
 <li>To use an image file, you need to unzip it and write it on a suitable SD card, using the UNIX tool dd. Windows users should use <a href="http://sourceforge.net/projects/win32diskimager/">Win32DiskImager</a>. Do not try to drag and drop or copy the image without using dd or Win32DiskImager &mdash; it won’t work</li>
 <li>Plug in your WAN cable to the RPi Ethernet port and LAN cable to the USB-Ethernet adapter, that is connected to one of the USB ports</li>
 <li>Plug in into power source and wait while it’s booting up</li>
@@ -83,4 +83,4 @@ Candybox
 <h3>
 <a name="contributors" class="anchor" href="#contributors"><span class="octicon octicon-link"></span></a>Contributors</h3>
 
-<p>If you want to help make Candybox better, feel free to do so.  Join project on GitHub and make a pull request.</p>
+<p>If you want to help make Candybox better, feel free to do so. <br> Join project on GitHub and make a pull request.</p>
