@@ -8,7 +8,7 @@ Maintainer: Alexander Bykov <alardus@alardus.org>
 Copyright (c) 2013, Alexander Bykov
 """
 
-import hashlib, ConfigParser, os, crypt, re, subprocess, shlex, urllib2
+import hashlib, ConfigParser, os, crypt, re, subprocess, shlex, urllib2, json
 from bottle import run, route, request, response, redirect, view, template, static_file
 
 CAVA_SECRET = 'cava-hava-cacava'
@@ -54,23 +54,13 @@ else:
 
 # pull tunlr api
 try:
-    response = urllib2.urlopen('http://tunlr.net/tunapi.php?action=getdns&version=1&format=json', timeout = 3)  
-    html = response.read()
-    html = html.split(',')
-    if len(html) == 2:
-        [dns1, dns2] = html
-        dns1 = dns1.split(':')
-    if len(dns1) == 2:
-        [dns, ip] = dns1
-        ip = ip[1:-1]
+    tunlr_json = urllib2.urlopen('http://tunlr.net/tunapi.php?action=getdns&version=1&format=json', timeout = 3).read()
+    tunlr_data = json.loads(tunlr_json)
+    ip = tunlr_data.get('dns1')
 except:
     ip = ''
 
-if ip == '':
-    tunlr_ip = '69.197.169.9'
-else:
-    tunlr_ip = ip
-# end
+tunlr_ip = ip or '69.197.169.9'
 
 
 def exec_iptables_command(cmd):
