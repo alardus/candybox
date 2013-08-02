@@ -20,14 +20,23 @@
       <div class="navbar-inner">
         <div class="container-fluid">
         <a class="brand"><img src="static/img/candybox.png" width="16" height="16"> Candybox</a>
-        <ul class="nav">
-          <li><a href="setup">Settings</a></li>
-          <li class="divider-vertical"></li>
-          <li><a href="status">Status</a></li>
-          <li class="divider-vertical"></li>
-          <li class="active"><a href="">About</a></li>
-        </ul>
-      </div>
+          <form id="form" action="/reboot" method="POST">
+            <div class="nav-collapse collapse">
+              <p class="navbar-text pull-right">
+                <button type="submit"><i class="icon-repeat"></i></button>
+                <button type="submit" onclick="form.action='/off' "><i class="icon-off"></i></button>
+              </p>
+
+            <ul class="nav">
+              <li><a href="setup">Settings</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="status">Status</a></li>
+              <li class="divider-vertical"></li>
+              <li class="active"><a href="">About</a></li>
+            </ul>
+
+        </div>
+      </form>
       </div>
     </div>
 
