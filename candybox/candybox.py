@@ -190,7 +190,7 @@ def put_dyndns(login, password, host):
     os.system('/usr/bin/candybox-logs.sh')
 
 def get_proxy_netflix():
-    netflix_tunlr='142.54.177.158'
+    netflix_tunlr='69.197.169.9'
     netflix_block='208.122.23.22'
     fl = open(proxy, 'r')
     lines = fl.readlines()
@@ -210,7 +210,7 @@ def get_proxy_netflix():
     return None, None
 
 def get_proxy_pandora():
-    pandora_tunlr='142.54.177.158'
+    pandora_tunlr='69.197.169.9'
     pandora_block='208.122.23.22'
     fl = open(proxy, 'r')
     lines = fl.readlines()

@@ -9,4 +9,5 @@
 # Maintainer: Alexander Bykov <alardus@alardus.org>
 ###
 
-`apt-get -y install candybox`
+`apt-get update`
+`apt-get -y --force-yes -o Dpkg::Options::="--force-overwrite" install candybox`

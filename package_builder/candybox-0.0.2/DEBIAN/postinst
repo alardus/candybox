@@ -4,4 +4,4 @@
 #pid=`/bin/ps -e f | /bin/grep [c]andybox.py | /usr/bin/awk '{print $1}'`
 #/bin/kill -9 $pid
 /usr/bin/candybox.sh
-
+service dnsmasq restart
