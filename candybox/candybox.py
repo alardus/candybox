@@ -350,6 +350,16 @@ def index():
     os.system('/usr/bin/candybox-logs.sh')
     return redirect('/setup')
 
+@route('/reboot', method="POST")
+def index():
+    os.system('/sbin/reboot')
+    return redirect('/setup')
+
+@route('/off', method="POST")
+def index():
+    os.system('/sbin/poweroff')
+    return redirect('/setup')
+
 @route('/port', method="POST")
 def index():
     if not has_auth():

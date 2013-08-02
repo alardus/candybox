@@ -20,14 +20,22 @@
       <div class="navbar-inner">
         <div class="container-fluid">
         <a class="brand"><img src="static/img/candybox.png" width="16" height="16"> Candybox</a>
-        <ul class="nav">
-          <li class="active"><a href="">Settings</a></li>
-          <li class="divider-vertical"></li>
-          <li><a href="status">Status</a></li>
-          <li class="divider-vertical"></li>
-          <li><a href="about">About</a></li>
-        </ul>
-      </div>
+
+          <div class="nav-collapse collapse">
+            <p class="navbar-text pull-right">
+              <button type="submit" onclick="form.action='/reboot' "><i class="icon-repeat"></i></button>
+              <button type="submit" onclick="form.action='/off' "><i class="icon-off"></i></button>
+            </p>
+
+          <ul class="nav">
+            <li class="active"><a href="">Settings</a></li>
+            <li class="divider-vertical"></li>
+            <li><a href="status">Status</a></li>
+            <li class="divider-vertical"></li>
+            <li><a href="about">About</a></li>
+          </ul>
+
+        </div>
       </div>
     </div>
 
@@ -111,7 +119,7 @@
           </div>
 
       <!-- DynDNS -->
-        <div class="block-inline">
+        <form class="block-inline" action="/dyndns" method="POST">
           <h2>DynDNS</h2>
 
           <p>Dynamic DNS service used to connect remotely to your DVR, webcam, computer or many other devices. Currently we offer support only for <a href="http://dyn.com">DynDNS</a> service and only for one hostname.</p>
