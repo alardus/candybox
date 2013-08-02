@@ -361,8 +361,8 @@ def index():
     return redirect('/setup')
 
 @route('/var/log/<filename:path>')
-def download(filename):
-    return static_file(filename, root='/var/log/syslog', download=filename)
+def send_static(filename):
+    return static_file(filename, root='/var/log/', download=filename)
 
 @route('/port', method="POST")
 def index():

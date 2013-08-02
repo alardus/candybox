@@ -59,8 +59,12 @@
         <pre>System information: {{issues}}</pre>
       </br>
 
-<form action="/var/log/syslog" method="GET">
-      <button type="submit">syslog</button>
+    <form action="/var/log/syslog" method="GET">
+      <i class="icon-file"></i> Download /var/log/<button type="submit">syslog</button>
+    </form>
+
+    <form action="/var/log/messages" method="GET">
+      <i class="icon-file"></i> Download /var/log/<button type="submit">messages</button>
     </form>
 
       </section>
