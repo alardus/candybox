@@ -124,7 +124,7 @@ cp etc/profile.d/raspi-config.sh /etc/profile.d/raspi-config.sh
 # Updating crontab for root
 echo "0 04 * * * /usr/bin/candybox-stat.sh" > /tmp/cronjob
 	test_error
-echo "0 04 * * * /usr/bin/candybox-upgrade.sh" > /tmp/cronjob
+echo "0 04 * * * /usr/bin/candybox-upgrade.sh" >> /tmp/cronjob
 	test_error
 echo "*/1 * * * * /usr/bin/candybox-logs.sh" >> /tmp/cronjob
 	test_error
