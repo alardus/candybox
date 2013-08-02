@@ -31,6 +31,7 @@ if devel:
     ddns_status       = 'ddns_status'
     proxy             = 'dnsmasq.conf'
     iptables_cfg      = 'iptables.rules'
+    dhcp_lease        = 'dhcp_lease'
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
 
@@ -48,6 +49,7 @@ else:
     ddns              = '/var/log/candybox/ddns'
     ddns_status       = '/var/log/candybox/ddns_status'
     iptables_cfg      = '/etc/ppp/ip-up.d/iptables.rules'
+    dhcp_lease        = '/var/log/candybox/dhcp_lease'
 
 
 def exec_iptables_command(cmd):
@@ -443,7 +445,8 @@ def index():
     ifs = open(ifaces).read()
     cnn = open(connect).read()
     dns = open(ddns).read()
-    return template('status', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn, dns = dns))
+    dhcp = open(dhcp_lease).read()
+    return template('status', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn, dns = dns, dhcp = dhcp))
 
 @route('/about')
 def index():
