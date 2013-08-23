@@ -8,7 +8,7 @@ Maintainer: Alexander Bykov <alardus@alardus.org>
 Copyright (c) 2013, Alexander Bykov
 """
 
-import hashlib, ConfigParser, os, crypt, re, subprocess, shlex
+import hashlib, ConfigParser, os, crypt, re, subprocess, shlex, urllib2
 from bottle import run, route, request, response, redirect, view, template, static_file
 
 CAVA_SECRET = 'cava-hava-cacava'
@@ -50,6 +50,27 @@ else:
     ddns_status       = '/var/log/candybox/ddns_status'
     iptables_cfg      = '/etc/ppp/ip-up.d/iptables.rules'
     dhcp_lease        = '/var/log/candybox/dhcp_lease'
+
+
+# pull tunlr api
+try:
+    response = urllib2.urlopen('http://tunlr.net/tunapi.php?action=getdns&version=1&format=json', timeout = 3)  
+    html = response.read()
+    html = html.split(',')
+    if len(html) == 2:
+        [dns1, dns2] = html
+        dns1 = dns1.split(':')
+    if len(dns1) == 2:
+        [dns, ip] = dns1
+        ip = ip[1:-1]
+except:
+    ip = ''
+
+if ip == '':
+    tunlr_ip = '69.197.169.9'
+else:
+    tunlr_ip = ip
+# end
 
 
 def exec_iptables_command(cmd):
@@ -192,7 +213,8 @@ def put_dyndns(login, password, host):
     os.system('/usr/bin/candybox-logs.sh')
 
 def get_proxy_netflix():
-    netflix_tunlr='69.197.169.9'
+    global tunlr_ip
+    netflix_tunlr = tunlr_ip
     netflix_block='208.122.23.22'
     fl = open(proxy, 'r')
     lines = fl.readlines()
@@ -212,7 +234,8 @@ def get_proxy_netflix():
     return None, None
 
 def get_proxy_pandora():
-    pandora_tunlr='69.197.169.9'
+    global tunlr_ip
+    pandora_tunlr = tunlr_ip
     pandora_block='208.122.23.22'
     fl = open(proxy, 'r')
     lines = fl.readlines()
@@ -414,6 +437,7 @@ def index():
 @route('/setup')
 @route('/')
 def index():
+    global tunlr_ip
     if not has_auth(): return redirect('/login')
 
     login, pwd = get_login_pass()
@@ -434,7 +458,7 @@ def index():
     pandora_block, pandora_tunlr = get_proxy_pandora()
     dyn_login, dyn_password, dyn_host = get_dyn_info()
     ports_info = get_ports_info()
-    return template('setup', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, badge = cnn_badge, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns, ports_info = ports_info))
+    return template('setup', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, badge = cnn_badge, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns, ports_info = ports_info, tunlr_ip = tunlr_ip))
 
 @route('/status')
 def index():
