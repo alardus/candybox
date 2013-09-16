@@ -15,7 +15,7 @@ CAVA_SECRET = 'cava-hava-cacava'
 devel = os.environ.get('DEVEL', 0) != 0
 
 if devel:
-    ETC_AUTH_FILE = 'cava-auth'
+    ETC_AUTH_FILE = 'devel/cava-auth'
 
     listen_host = '0.0.0.0'
     bottle_reloader=True
