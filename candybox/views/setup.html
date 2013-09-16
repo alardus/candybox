@@ -96,22 +96,22 @@
           <p>Port forwarding allows remote computers (for example, computers on the Internet) to connect to a specific computer or service within a private local-area network (LAN).</p>
 
             % str = ''
-            % for port, host in ports_info:
-            %     str += '<form action="/port" method="POST" class="form-inline"> <input name="host" value="%s" type="text" readonly="readonly"/> <input name="port" value="%s" class="span1" type="text" readonly="readonly"/> <input name="action" value="remove" type="hidden"/> <button class="btn" type="submit"><i class="icon-remove"></i></button> </form>' % (host, port)
+            % for ports, host in ports_info:
+            %     str += '<form action="/port" method="POST" class="form-inline"> <input name="host" value="%s" type="text" readonly="readonly"/> <input name="ports" value="%s" class="span1" type="text" readonly="readonly"/> <input name="action" value="remove" type="hidden"/> <button class="btn" type="submit"><i class="icon-remove"></i></button> </form>' % (host, ports)
             % end
             
             {{!str}}
-
+            
             <form id="remove-port-template" action="/port" method="POST" class="form-inline" style="display:none">
                <input name="host" type="text" readonly="readonly"/>
-               <input name="port" class="span1" type="text" readonly="readonly"/>
+               <input name="ports" class="span1" type="text" readonly="readonly"/>
                <input name="action" value="remove" type="hidden"/>
                <button class="btn" type="submit"><i class="icon-remove"></i></button>
             </form>
 
             <form action="/port" method="POST" class="form-inline">
               <input name="host" type="text" placeholder="host"/>
-              <input name="port" class="span1" type="text" placeholder="port"/>
+              <input name="ports" class="span1" type="text" placeholder="port"/>
               <input name="action" value="add" type="hidden"/>
               <button class="btn" type="submit"><i class="icon-plus"></i></button>
             </form>
@@ -180,7 +180,7 @@
             var clone = formTemplate.clone(true);
             clone.attr("id", null);
             clone.find("input[name='host']").val(data.host);
-            clone.find("input[name='port']").val(data.port);
+            clone.find("input[name='ports']").val(data.ports);
             formTemplate.before(clone);
             clone.fadeIn();
           } else {

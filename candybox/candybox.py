@@ -267,9 +267,10 @@ def put_proxy(netflix, pandora):
 def get_ports_info():
     out, err, code = exec_iptables_command('-t nat -n -L PREROUTING -m tcp')
     # DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:12345 to:1.1.1.1
-    #                                                             \________/\___/\__/\_____/
-    #                                                              tcp dpt: (.+)  to: (.+)
-    return re.findall(r" tcp dpt:(.+) to:(.+)", out)
+    # DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpts:90:100 to:2.2.2.2
+    #                                                             \_________/\____/\__/\_____/
+    #                                                              tcp dpts?: (.+)  to: (.+)
+    return re.findall(r" tcp dpts?:(.+) to:(.+)", out)
 
 @route('/static/<filepath:path>')
 def server_static(filepath):
@@ -388,26 +389,35 @@ def index():
     
     action = request.forms.get('action')
     host = (request.forms.get('host') or "").strip()
-    port = (request.forms.get('port') or "").strip()
+    ports = (request.forms.get('ports') or "").strip()
     
     if host == '':
         return '{ "status": "error", "message": "Wrong host" }'
     
-    port = int(port) if port.isdigit() else 0
+    ports = [int(port) if port.isdigit() else 0 for port in ports.split(":")]
     
-    if port < 1 or port > 65535:
-        return '{ "status": "error", "message": "Wrong port" }'
+    if len(ports) > 2:
+        return '{ "status": "error", "message": "Invalid portrange (too many ports)" }'
+    
+    for port in ports:
+        if port < 1 or port > 65535:
+            return '{ "status": "error", "message": "Wrong port value" }'
+    
+    if len(ports) == 2 and ports[0] >= ports[1]:
+        return '{ "status": "error", "message": "Invalid portrange (min > max)" }'
+    
+    ports = ':'.join(str(port) for port in ports)
     
     if action == 'add':
-        out, err, code = exec_iptables_command('-t nat -A PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
+        out, err, code = exec_iptables_command('-t nat -A PREROUTING -i ppp0 -p tcp -m tcp --dport %s -j DNAT --to-destination %s' % (ports, host))
         
         if code == 0:
-            return '{ "status": "ok", "host": "%s", "port": "%d" }' % (host, port)
+            return '{ "status": "ok", "host": "%s", "ports": "%s" }' % (host, ports)
         
         return '{ "status": "error", "message": "Can not add rule" }'
     
     if action == 'remove':
-        out, err, code = exec_iptables_command('-t nat -D PREROUTING -i ppp0 -p tcp -m tcp --dport %d -j DNAT --to-destination %s' % (port, host))
+        out, err, code = exec_iptables_command('-t nat -D PREROUTING -i ppp0 -p tcp -m tcp --dport %s -j DNAT --to-destination %s' % (ports, host))
         
         if code == 0:
             return '{ "status": "ok" }'
