@@ -139,6 +139,7 @@ def put_login_pass(login, pwd):
 def get_dyn_info():
 
     def find_dyn_host(dyndns):
+        hoststr = None
         fl = open(dyndns, 'r')
         for line in fl:
             if 'hostname' in line:
@@ -166,6 +167,7 @@ def get_dyn_info():
 def put_dyndns(login, password, host):
 
     def find_dyn_host(dyndns):
+        hoststr = None
         fl = open(dyndns, 'r')
         for line in fl:
             if 'hostname' in line:
