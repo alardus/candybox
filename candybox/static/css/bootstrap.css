@@ -221,7 +221,7 @@ textarea {
   }
 }
 
-body {
+/*body {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
@@ -233,7 +233,7 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;	
-}
+}*/
 
 .body-login {
   padding-top: 40px;

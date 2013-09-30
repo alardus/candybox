@@ -32,6 +32,7 @@ if devel:
     proxy             = 'devel/dnsmasq.conf'
     iptables_cfg      = 'devel/iptables.rules'
     dhcp_lease        = 'devel/dhcp_lease'
+    config            = 'config'
 else:
     ETC_AUTH_FILE = '/etc/cava-auth'
 
@@ -50,6 +51,7 @@ else:
     ddns_status       = '/var/log/candybox/ddns_status'
     iptables_cfg      = '/etc/ppp/ip-up.d/iptables.rules'
     dhcp_lease        = '/var/log/candybox/dhcp_lease'
+    config            = 'config'
 
 
 # pull tunlr api
@@ -62,6 +64,39 @@ except:
 
 tunlr_ip = ip or '69.197.169.9'
 
+
+def get_background():
+    rainbow = ''
+    steel = ''
+    with open(config, 'r') as fl:
+        lines = fl.readlines()
+        for line in lines:
+            if "=" in line:
+                key, value = line.split('=', 1)
+                key = key.strip()
+                if key == "background":
+                    bg = value.strip()  
+                    if bg == 'rainbow':
+                        rainbow = 'selected'
+                    if bg == 'steel':
+                        steel = 'selected'
+    return bg, rainbow, steel
+
+def set_background(background):
+    fl = open(config, 'r')
+    lines = fl.readlines()
+    fl.close()
+
+    fl = open(config, 'w')
+    for line in lines:
+        if not "background" in line:
+            fl.write(line)
+    fl.close()
+
+    fl = open(config, 'a')
+    fl.write('background=' + background + '\n')
+    fl.close()
+    return
 
 def exec_iptables_command(cmd):
     out = ''
@@ -436,6 +471,12 @@ def index():
     put_login_pass(login, pwd)
     return redirect('/setup')
 
+@route('/background', method="POST")
+def index():
+    background = request.forms.get('background')
+    set_background(background)
+    return redirect('/setup')
+
 @route('/setup')
 @route('/')
 def index():
@@ -456,11 +497,12 @@ def index():
 
     dns = open(ddns_status).read()
     dns = dns.strip()
+    bg, rainbow, steel = get_background()
     netflix_block, netflix_tunlr = get_proxy_netflix()
     pandora_block, pandora_tunlr = get_proxy_pandora()
     dyn_login, dyn_password, dyn_host = get_dyn_info()
     ports_info = get_ports_info()
-    return template('setup', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, badge = cnn_badge, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns, ports_info = ports_info, tunlr_ip = tunlr_ip))
+    return template('setup', dict(error = None, login = login, pwd = pwd, netflix_block = netflix_block, netflix_tunlr = netflix_tunlr, pandora_block = pandora_block, pandora_tunlr = pandora_tunlr, connect = cnn, badge = cnn_badge, dyn_login = dyn_login, dyn_password = dyn_password, dyn_host = dyn_host, dns = dns, ports_info = ports_info, tunlr_ip = tunlr_ip, bg = bg, rainbow = rainbow, steel = steel))
 
 @route('/status')
 def index():
@@ -472,10 +514,12 @@ def index():
     cnn = open(connect).read()
     dns = open(ddns).read()
     dhcp = open(dhcp_lease).read()
-    return template('status', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn, dns = dns, dhcp = dhcp))
+    bg, rainbow, steel = get_background()
+    return template('status', dict(error = None, issues = iss, uptime = upt, ifaces = ifs, connect = cnn, dns = dns, dhcp = dhcp, bg = bg, rainbow = rainbow, steel = steel))
 
 @route('/about')
 def index():
-    return template('about', dict(error = None))
+    bg, rainbow, steel = get_background()
+    return template('about', dict(error = None, bg = bg, rainbow = rainbow, steel = steel))
 
 run(host = listen_host, port=8080, reloader=bottle_reloader)

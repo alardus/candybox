@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="static/css/bootstrap.css" rel="stylesheet" media="screen">
+
+  <style>
+  body {
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333333;
+    background-color: #ffffff;
+    background: url(../static/img/{{bg}}.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+  }
+  </style>
+  
   </head>
   <body>
     <script src="static/js/jquery.js"></script>
@@ -49,7 +66,7 @@
           <div class="well sidebar-nav">
               <p><i>Note:</i> Here you can setup many of features that you may need from a router. All other setting can be accessed by SSH: <code>$ ssh 192.168.0.1</code></p>
           </div>
-      </div>
+        </div>
 
       <!--Body content-->
         <div class="span8"><br>
@@ -135,6 +152,18 @@
             <button class="btn" type="submit">Apply changes</button>
             <button class="btn btn-danger" type="submit" onclick="form.action='/dyndns_disconnect' ">Disconnect</button>
           </form>
+
+      <!-- Set background -->
+          <form class="block-inline" action="/background" method="POST">
+          <h2>Background</h2>
+          <p>Change background image for Candybox interface:</p>
+              <select name="background">
+              <option value="rainbow" {{rainbow}}>Rainbow</option>
+              <option value="steel" {{steel}}>Steel</option><br>
+              </select><br>
+              <button class="btn" type="submit">Apply changes</button>
+          </form>
+
       </div>
     </div> <!-- row -->
   </div> <!-- container -->
