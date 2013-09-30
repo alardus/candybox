@@ -315,7 +315,8 @@ def server_static(filepath):
 def login():
     response.delete_cookie('auth')
     auth = getAuthCachie()
-    return template('login', dict(isnew = (auth == None)))
+    bg, rainbow, steel = get_background()
+    return template('login', dict(isnew = (auth == None), bg = bg, rainbow = rainbow, steel = steel))
 
 @route('/login', method="POST")
 def login_post():
