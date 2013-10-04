@@ -10,19 +10,13 @@
 ###
 
 # Check that the file with uuid exists
-function test_error {
-    if [ $? != 0 ]; then 
-        uuidgen -t > /var/log/uuid
-    elif [ "$id" == "" ]; then
-    	uuidgen -t > /var/log/uuid
-    fi
-}
+id="/var/log/uuid"
 
-cat /var/log/uuid 2> /dev/null
-	test_error
-
-id=`/bin/cat /var/log/uuid`
-    test_error
+if [ -s "$id" -a -e "$id" ] ; then
+	echo "" > /dev/null
+else
+	uuidgen -t > /var/log/uuid
+fi
 
 #Preparing data
 uuid=`cat /var/log/uuid`
