@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# Installing new kernel modules
-rmmod l2tp_core
-rmmod l2tp_ppp
-
-depmod -a 
-modprobe l2tp_core
-modprobe l2tp_ppp

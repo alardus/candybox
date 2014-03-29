@@ -63,10 +63,9 @@ cp etc/ddclient.conf /etc/ddclient.conf
 echo "Updating apt cache and installing packages..."
 sleep 5
 apt-get update 
-LC_ALL=C apt-get install dnsmasq xl2tpd-kernel xl2tpd-modules candybox fail2ban ddclient host git libpcap-dev dstat htop devscripts fakeroot debhelper uuid-runtime
+LC_ALL=C apt-get -y --force-yes -o Dpkg::Options::="--force-overwrite" install dnsmasq xl2tpd candybox fail2ban ddclient host git libpcap-dev dstat htop devscripts fakeroot debhelper uuid-runtime
 	test_package "dnsmasq"
-	test_package "xl2tpd-kernel"
-	test_package "xl2tpd-modules"
+	test_package "xl2tpd"
 	test_package "candybox"
 	test_package "fail2ban"
 	test_package "ddclient"

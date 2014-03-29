@@ -85,14 +85,14 @@
       <form class="block-inline" action="/proxy" method="POST">
           <h2>Netflix and Pandora</h2>
           <p>If you are living outside the US you can't use Netflix, Pandora and some other services in a normal way. To access them you need to use proxy services located in the US.</p> 
-          <p>Not all of them are free for use, so you may need to create account before you using them. Currently we offer support only for <a href="http://tunlr.net">Tunlr</a> (free, but does not support Netflix) and <a href="http://www.unblock-us.com">Unblock-US</a> (requires payment and supports everything).</p><br>
+          <p>Not all of them are free for use, so you may need to create account before you using them. Currently we offer support only for <a href="http://portaller.com">Portaller</a> (free, but does not support Netflix) and <a href="http://www.unblock-us.com">Unblock-US</a> (requires payment and supports everything).</p><br>
 
         <table class="table table-striped">
         <tr>
           <td>Select service used for access <b><i>Netflix</i></b></td>
           <td><select name="netflix">
               <option value="208.122.23.22" {{netflix_block}}>Unblock-US (requires payment)</option>
-                <option value="{{tunlr_ip}}" {{netflix_tunlr}}>Tunlr (free)</option></select>
+                <option value="{{tunlr_ip}}" {{netflix_tunlr}}>Portaller (free)</option></select>
             </td>
         </tr>
 
@@ -100,7 +100,7 @@
           <td>Select service used for access <b><i>Pandora</i></b> </td>
           <td><select name="pandora">
               <option value="208.122.23.22" {{pandora_block}}>Unblock-US (requires payment)</option>
-              <option value="{{tunlr_ip}}" {{pandora_tunlr}}>Tunlr (free)</option>
+              <option value="{{tunlr_ip}}" {{pandora_tunlr}}>Portaller (free)</option>
             </select></td>
         </tr>
         </table>

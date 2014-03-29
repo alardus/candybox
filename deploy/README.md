@@ -2,13 +2,10 @@ deploy
 ======
 
 ##How to make a deployment##
-**ATTN! Remember that you must build l2tp_* modules and xl2tpd binary files on a target machine with ARM arch.**
 
 ###Prepare packages###
-* You need to build 3 packages - 'candybox', 'xl2tpd-kernel' and 'xl2tpd-modules'
-* Package folder 'candybox' with kernel version in his name already contains everything needed for that kernel version. If we don’t have package with actual kernel version at github repository, you can build it yourself (see 'kernel_builder', you will need to install 'git', 'libpcap-dev', 'devscripts', 'fakeroot', 'debhelper' and 'kpartx'), create new package and make pull request
+* You need to build 1 package - 'candybox'
 * Copy latest 'candybox' files to 'candybox' package folder at path /usr/share/candybox
-* Build latest 'xl2tpd' (see 'xl2tpd_builder'), then copy files from builded 'xl2tpd' package (excluding 'DEBIAN' folder) to the 'xl2tpd-kernel' package folder
 * Run 'repo_update.sh' (see 'package_builder', ckeck packages names at script) and copy files from 'ubuntu' folder to the repository URL
 * (optional) Change repository URL in 'repo.list' if you change it on previous step
 

@@ -3,9 +3,10 @@ Candybox - it's a fully configured and ready to run software router for Raspberr
 All information about project and it's latest version available at:
 
 http://www.candyboxrouter.com
+Version: 0.0.2
 
 Maintainer: Alexander Bykov <alardus@alardus.org>
-Copyright (c) 2013, Alexander Bykov
+Copyright (c) 2013-2014, Alexander Bykov
 """
 
 import hashlib, ConfigParser, os, crypt, re, subprocess, shlex, urllib2, json
@@ -55,14 +56,14 @@ else:
 
 
 # pull tunlr api
-try:
-    tunlr_json = urllib2.urlopen('http://tunlr.net/tunapi.php?action=getdns&version=1&format=json', timeout = 3).read()
-    tunlr_data = json.loads(tunlr_json)
-    ip = tunlr_data.get('dns1')
-except:
-    ip = ''
+# try:
+#     tunlr_json = urllib2.urlopen('http://tunlr.net/tunapi.php?action=getdns&version=1&format=json', timeout = 3).read()
+#     tunlr_data = json.loads(tunlr_json)
+#     ip = tunlr_data.get('dns1')
+# except:
+#     ip = ''
 
-tunlr_ip = ip or '69.197.169.9'
+tunlr_ip = '107.170.15.247'
 
 
 def get_background():

@@ -1,0 +1,20 @@
+candybox (0.0.2) stable; urgency=medium
+
+  * Updated to the latest kernel version
+  * Swithed back to the Debian xl2tpd package instead Xelerance 
+  * Tunlr closed and now removed from the list of DNS proxy
+  * Portaller DNS proxy was added instead Tunlr
+
+ -- Alexander Bykov <alardus@alardus.org>  Sat, 29 Mar 2014 01:53:00 +0400
+
+candybox (0.0.1-2) stable; urgency=medium
+
+  * Update tunlr DNS IP
+
+ -- Alexander Bykov <alardus@alardus.org>  Fri, 2 Aug 2013 12:43:20 +0400
+
+candybox (0.0.1) stable; urgency=medium
+
+  * Initial release
+
+ -- Alexander Bykov <alardus@alardus.org>  Fri, 5 Jul 2013 18:46:42 +0400
